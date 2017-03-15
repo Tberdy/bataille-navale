@@ -11,14 +11,7 @@
  * Created on 9 mars 2017, 22:58
  */
 
-#include <cstdlib>
 #include "Game.hpp"
-
-using namespace std;
-
-/*
- *
- */
 
 int main(int argc, char** argv) {
 

@@ -14,13 +14,18 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <iostream>
+
 class Game {
 public:
     Game();
     Game(const Game& orig);
     virtual ~Game();
+    
+    void displayGrid();
 private:
-
+    int lig;
+    int col;
 };
 
 #endif /* GAME_HPP */
