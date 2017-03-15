@@ -5,34 +5,58 @@
  */
 
 /*
- * File:   Game.hpp
+ * File:   Game.cpp
  * Author: Tberdy
  *
  * Created on 9 mars 2017, 23:03
  */
 
+#include "Game.hpp"
 
-#ifndef GAME_HPP
-#define GAME_HPP
+Game::Game() {
+    lig=15;
+    col=15;
+}
 
-#include <string>
-#include <iostream>
-#include <vector>
-class Game {
+Game::Game(const Game& orig) {
+}
 
-public:
-    Game();
-    Game(const Game& orig);
-    virtual ~Game();
-    std::vector< std::vector<int> > field;
-    //Getters and setters
+Game::~Game() {
+}
 
-    void displayGrid();
-private:
-    int lig;
-    int col;
+void Game::displayGrid()
+{
+    std::cout << " ";
+    for(int i = 0; i<lig; i++)
+    {
+        if(i<10) std::cout << "| " << i;
+        else std::cout << "|" << i%100;
+    }
+    std::cout << "|" << std::endl;
+    for(int i = 0;i<2*lig+1 ;i++)
+    {
 
-};
 
-#endif /* GAME_HPP */
+        if(i%2)
+        {
+            std::cout << (char)((i/2)%27+97) ;
+            for(int j=0;j<col;j++)
+            {
+                std::cout << "|  ";
+            }
+            std::cout << "|" << std::endl;
+        }
+        else
+        {
+            std::cout << " ";
+            for(int j=0;j<col;j++)
+            {
+                std::cout << "|--";
+            }
+            std::cout << "|" << std::endl;
+        }
 
+    }
+
+
+}
