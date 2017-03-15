@@ -4,21 +4,35 @@
  * and open the template in the editor.
  */
 
-/* 
- * File:   Game.cpp
+/*
+ * File:   Game.hpp
  * Author: Tberdy
- * 
+ *
  * Created on 9 mars 2017, 23:03
  */
 
-#include "Game.hpp"
 
-Game::Game() {
-}
+#ifndef GAME_HPP
+#define GAME_HPP
 
-Game::Game(const Game& orig) {
-}
+#include <string>
+#include <iostream>
+#include <vector>
+class Game {
 
-Game::~Game() {
-}
+public:
+    Game();
+    Game(const Game& orig);
+    virtual ~Game();
+    std::vector< std::vector<int> > field;
+    //Getters and setters
+
+    void displayGrid();
+private:
+    int lig;
+    int col;
+
+};
+
+#endif /* GAME_HPP */
 
