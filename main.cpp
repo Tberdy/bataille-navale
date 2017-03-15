@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   main.cpp
  * Author: Tberdy
  *
@@ -12,14 +12,18 @@
  */
 
 #include <cstdlib>
+#include "Game.hpp"
 
 using namespace std;
 
 /*
- * 
+ *
  */
+
 int main(int argc, char** argv) {
 
+    Game a;
+    a.displayGrid();
     return 0;
 }
 
