@@ -15,8 +15,9 @@
 
 int main(int argc, char** argv) {
 
-    Game a;
-    a.displayGrid();
+    Game* game;
+    game->loop();
+    
     return 0;
 }
 

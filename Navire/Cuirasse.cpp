@@ -14,11 +14,14 @@
 #include "Cuirasse.hpp"
 
 Cuirasse::Cuirasse() {
-}
-
-Cuirasse::Cuirasse(const Cuirasse& orig) {
+    m_size = 7;
+    m_puissance = 9;
 }
 
 Cuirasse::~Cuirasse() {
+}
+
+bool Cuirasse::turn() {
+
 }
 

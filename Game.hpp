@@ -16,16 +16,21 @@
 
 #include <iostream>
 
+#include "Grid/GridNavire.hpp"
+#include "Grid/GridDamage.hpp"
+
+#include "Navire/Croiseur.hpp"
+#include "Navire/Cuirasse.hpp"
+#include "Navire/Destroyer.hpp"
+#include "Navire/SousMarin.hpp"
+
 class Game {
 public:
     Game();
-    Game(const Game& orig);
     virtual ~Game();
     
-    void displayGrid();
+    void loop();
 private:
-    int lig;
-    int col;
 };
 
 #endif /* GAME_HPP */

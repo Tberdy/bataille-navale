@@ -14,9 +14,8 @@
 #include "Croiseur.hpp"
 
 Croiseur::Croiseur() {
-}
-
-Croiseur::Croiseur(const Croiseur& orig) {
+    m_size = 5;
+    m_puissance = 4;
 }
 
 Croiseur::~Croiseur() {

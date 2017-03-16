@@ -14,11 +14,14 @@
 #ifndef GRIDNAVIRE_HPP
 #define GRIDNAVIRE_HPP
 
-class GridNavire {
+#include "Grid.hpp"
+
+class GridNavire : public Grid {
 public:
     GridNavire();
-    GridNavire(const GridNavire& orig);
     virtual ~GridNavire();
+    
+    void displayGrid() override;
 private:
 
 };

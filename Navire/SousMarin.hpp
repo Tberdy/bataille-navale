@@ -14,10 +14,11 @@
 #ifndef SOUSMARIN_HPP
 #define SOUSMARIN_HPP
 
-class SousMarin {
+#include "Navire.hpp"
+
+class SousMarin : public Navire {
 public:
     SousMarin();
-    SousMarin(const SousMarin& orig);
     virtual ~SousMarin();
 private:
 

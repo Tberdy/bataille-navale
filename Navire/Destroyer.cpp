@@ -14,11 +14,15 @@
 #include "Destroyer.hpp"
 
 Destroyer::Destroyer() {
-}
-
-Destroyer::Destroyer(const Destroyer& orig) {
+    m_size = 3;
+    m_puissance = 1;
 }
 
 Destroyer::~Destroyer() {
 }
+
+void Destroyer::fire() {
+
+}
+
 

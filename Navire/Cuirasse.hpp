@@ -14,11 +14,14 @@
 #ifndef CUIRASSE_HPP
 #define CUIRASSE_HPP
 
-class Cuirasse {
+#include "Navire.hpp"
+
+class Cuirasse : public Navire {
 public:
     Cuirasse();
-    Cuirasse(const Cuirasse& orig);
     virtual ~Cuirasse();
+    
+    bool turn() override;
 private:
 
 };

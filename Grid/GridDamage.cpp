@@ -16,9 +16,30 @@
 GridDamage::GridDamage() {
 }
 
-GridDamage::GridDamage(const GridDamage& orig) {
+GridDamage::~GridDamage() {
 }
 
-GridDamage::~GridDamage() {
+void GridDamage::displayGrid() {
+    std::cout << " ";
+    for (int i = 0; i < NB_LIG; i++) {
+        if (i < 10) std::cout << "| " << i;
+        else std::cout << "|" << i % 100;
+    }
+    std::cout << "|" << std::endl;
+    for (int i = 0; i < 2 * NB_LIG + 1; i++) {
+        if (i % 2) {
+            std::cout << (char) ((i / 2) % 27 + 97);
+            for (int j = 0; j < NB_COL; j++) {
+                std::cout << "|  ";
+            }
+            std::cout << "|" << std::endl;
+        } else {
+            std::cout << " ";
+            for (int j = 0; j < NB_COL; j++) {
+                std::cout << "|--";
+            }
+            std::cout << "|" << std::endl;
+        }
+    }
 }
 

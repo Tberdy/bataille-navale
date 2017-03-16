@@ -14,11 +14,14 @@
 #ifndef GRIDDAMAGE_HPP
 #define GRIDDAMAGE_HPP
 
-class GridDamage {
+#include "Grid.hpp"
+
+class GridDamage : public Grid {
 public:
     GridDamage();
-    GridDamage(const GridDamage& orig);
     virtual ~GridDamage();
+    
+    void displayGrid() override;
 private:
 
 };

@@ -14,13 +14,24 @@
 #ifndef NAVIRE_HPP
 #define NAVIRE_HPP
 
+#include <vector>
+
+#include "Navire.hpp"
+
 class Navire {
 public:
     Navire();
-    Navire(const Navire& orig);
     virtual ~Navire();
-private:
-
+    
+    bool move();
+    virtual bool turn();
+    virtual void fire();
+protected:
+    int m_size;
+    int m_puissance;
+    
+    bool checkMove();
+    bool checkTurn();
 };
 
 #endif /* NAVIRE_HPP */

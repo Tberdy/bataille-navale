@@ -16,9 +16,25 @@
 Navire::Navire() {
 }
 
-Navire::Navire(const Navire& orig) {
-}
-
 Navire::~Navire() {
 }
 
+bool Navire::move() {
+
+}
+
+bool Navire::checkMove() {
+
+}
+
+bool Navire::turn() {
+
+}
+
+bool Navire::checkTurn() {
+
+}
+
+void Navire::fire() {
+
+}

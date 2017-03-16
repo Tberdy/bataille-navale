@@ -14,10 +14,11 @@
 #ifndef CROISEUR_HPP
 #define CROISEUR_HPP
 
-class Croiseur {
+#include "Navire.hpp"
+
+class Croiseur : public Navire {
 public:
     Croiseur();
-    Croiseur(const Croiseur& orig);
     virtual ~Croiseur();
 private:
 

@@ -5,19 +5,23 @@
  */
 
 /* 
- * File:   SousMarin.cpp
+ * File:   Task.hpp
  * Author: Tberdy
- * 
- * Created on 9 mars 2017, 23:05
+ *
+ * Created on 15 mars 2017, 23:55
  */
 
-#include "SousMarin.hpp"
+#ifndef TASK_HPP
+#define TASK_HPP
 
-SousMarin::SousMarin() {
-    m_size = 1;
-    m_puissance = 1;
-}
+class Task {
+public:
+    Task();
+    virtual ~Task();
+private:
+    int m_nbLoop;
+    
+};
 
-SousMarin::~SousMarin() {
-}
+#endif /* TASK_HPP */
 

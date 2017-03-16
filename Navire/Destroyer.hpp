@@ -14,11 +14,14 @@
 #ifndef DESTROYER_HPP
 #define DESTROYER_HPP
 
-class Destroyer {
+#include "Navire.hpp"
+
+class Destroyer : public Navire {
 public:
     Destroyer();
-    Destroyer(const Destroyer& orig);
     virtual ~Destroyer();
+    
+    void fire() override;
 private:
 
 };

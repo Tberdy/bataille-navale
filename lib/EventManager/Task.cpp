@@ -5,19 +5,17 @@
  */
 
 /* 
- * File:   SousMarin.cpp
+ * File:   Task.cpp
  * Author: Tberdy
  * 
- * Created on 9 mars 2017, 23:05
+ * Created on 15 mars 2017, 23:55
  */
 
-#include "SousMarin.hpp"
+#include "Task.hpp"
 
-SousMarin::SousMarin() {
-    m_size = 1;
-    m_puissance = 1;
+Task::Task() {
 }
 
-SousMarin::~SousMarin() {
+Task::~Task() {
 }
 

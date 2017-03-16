@@ -14,11 +14,17 @@
 #ifndef GRID_HPP
 #define GRID_HPP
 
+#define NB_LIG 15
+#define NB_COL 15
+
+#include <iostream>
+
 class Grid {
 public:
     Grid();
-    Grid(const Grid& orig);
     virtual ~Grid();
+    
+    virtual void displayGrid() = 0;
 private:
 
 };
