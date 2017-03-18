@@ -14,12 +14,24 @@
 #include "Game.hpp"
 
 Game::Game() {
+    for (int i = 0 ; i < NB_LIG ; i++) {
+        m_gridPlayer1.push_back(std::vector<Box*>(NB_COL, new Box()));
+        m_gridPlayer2.push_back(std::vector<Box*>(NB_COL, new Box()));
+    }
 }
 
 Game::~Game() {
 }
 
 void Game::loop() {
+    int state = LOOP_IN_GAME;
+    
+    while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
+    }
+}
+
+void Game::display(int player) {
     
 }
+
 

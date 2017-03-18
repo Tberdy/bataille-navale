@@ -17,6 +17,13 @@ void xplt_clrscr() {
     system("cls");
 }
 
+void xplt_gotoligcol(int lig, int col) {
+    COORD Coord;
+    Coord.X = col;
+    Coord.Y = lig;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Coord);
+}
+
 #else
 
 char xplt_getch() {
@@ -31,6 +38,10 @@ char xplt_getch() {
 
 void xplt_clrscr() {
     system("clear");
+}
+
+void xplt_gotoligcol(int lig, int col) {
+    printf("\033[%d;%dH", lig+1, col+1);
 }
 
 #endif

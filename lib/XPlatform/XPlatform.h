@@ -26,6 +26,7 @@ extern "C" {
 
 char xplt_getch();
 void xplt_clrscr();
+void xplt_gotoligcol();
 
 #ifdef __cplusplus
 }

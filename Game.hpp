@@ -15,14 +15,23 @@
 #define GAME_HPP
 
 #include <iostream>
+#include <vector>
+#include <string>
 
-#include "Grid/GridNavire.hpp"
-#include "Grid/GridDamage.hpp"
+#include "Box.hpp"
 
+#include "Navire/Navire.hpp"
 #include "Navire/Croiseur.hpp"
 #include "Navire/Cuirasse.hpp"
 #include "Navire/Destroyer.hpp"
 #include "Navire/SousMarin.hpp"
+
+#define NB_LIG 15
+#define NB_COL 15
+
+#define LOOP_IN_GAME 0
+#define LOOP_END_OF_GAME 1
+#define LOOP_GAME_OVER 2
 
 class Game {
 public:
@@ -31,6 +40,11 @@ public:
     
     void loop();
 private:
+    std::vector<std::vector<Box*> > m_gridPlayer1;
+    std::vector<std::vector<Box*> > m_gridPlayer2;
+    
+    void display(int player);
+    void genBoat();
 };
 
 #endif /* GAME_HPP */
