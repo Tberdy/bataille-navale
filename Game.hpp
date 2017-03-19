@@ -31,6 +31,11 @@
 
 #include "const.hpp"
 
+struct Cursor {
+    int lig;
+    int col;
+};
+
 class Game {
 public:
     Game();
@@ -41,15 +46,21 @@ public:
     void initBoat(int player);
 private:
     std::vector<std::vector<std::vector<Box*> > > m_grids;
+    std::vector<std::vector<std::vector<bool> > > m_damage;
     std::vector<std::vector<Navire*> > m_boats;
+    std::vector<std::string> m_messageBus;
+    std::vector<Cursor*> m_cursors;
     
     bool checkKeys(char move, int action);
-    void display(int player);
-    
+    void selectBoat(int player);
+    void display2(int player);
     
     void genBoat(int player, int type);
     bool findPlace(int player, int size, std::vector<Position*>& pos);
     bool checkIfPosValid(int player, const std::vector<Position*>& pos);
+    
+    void moveCursor(int player, int lig, int col);
+    void resetCursor(int player);
 };
 
 #endif /* GAME_HPP */

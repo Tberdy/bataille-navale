@@ -36,6 +36,7 @@
 #define IMG_CROISEUR 'o'
 #define IMG_DESTROYER '+'
 #define IMG_SOUSMARIN 's'
+#define IMG_DAMAGE 'x'
 
 #define DIR_UP 0
 #define DIR_DOWN 1

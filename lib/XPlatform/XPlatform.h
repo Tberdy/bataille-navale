@@ -26,7 +26,7 @@ extern "C" {
 
 char xplt_getch();
 void xplt_clrscr();
-void xplt_gotoligcol();
+void xplt_gotoligcol(int lig, int col);
 
 #ifdef __cplusplus
 }
