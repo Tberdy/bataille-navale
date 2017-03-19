@@ -11,9 +11,12 @@
  * Created on 9 mars 2017, 22:58
  */
 
+#include <cstdlib>
+#include <ctime>
 #include "Game.hpp"
 
 int main(int argc, char** argv) {
+    srand(time(NULL));
 
     Game* game;
     game->loop();

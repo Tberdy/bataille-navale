@@ -18,6 +18,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 #include "lib/XPlatform/XPlatform.h"
 
 #include "Box.hpp"
@@ -28,25 +29,7 @@
 #include "Navire/Destroyer.hpp"
 #include "Navire/SousMarin.hpp"
 
-#define NB_LIG 15
-#define NB_COL 15
-
-#define LOOP_IN_GAME 0
-#define LOOP_END_OF_GAME 1
-#define LOOP_GAME_OVER 2
-
-#define PLAYER_ONE 1
-#define PLAYER_TWO 2
-
-#define KEY_NULL 0
-#define KEY_UP 'z'
-#define KEY_DOWN 's'
-#define KEY_LEFT 'q'
-#define KEY_RIGHT 'd'
-#define KEY_SPACE 'h'
-#define KEY_ESCAPE 'p'
-#define KEY_FIRE 'f'
-#define KEY_TURN 't'
+#include "const.hpp"
 
 class Game {
 public:
@@ -55,11 +38,17 @@ public:
     
     void loop();
 private:
-    std::vector<std::vector<Box*> > m_gridPlayer1;
-    std::vector<std::vector<Box*> > m_gridPlayer2;
+    std::vector<std::vector<std::vector<Box*> > > m_grids;
+    std::vector<std::vector<Navire*> > m_boats;
     
+    bool checkKeys(char move, int action);
     void display(int player);
-    void genBoat();
+    
+    void initBoat(int player);
+    void genBoat(int player, int type);
+    bool findPlace(int player, int size, std::vector<Position*>& pos);
+    bool checkIfPosValid(int player, const std::vector<Position*>& pos);
+    
 };
 
 #endif /* GAME_HPP */

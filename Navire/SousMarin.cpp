@@ -14,7 +14,8 @@
 #include "SousMarin.hpp"
 
 SousMarin::SousMarin() {
-    m_size = 1;
+    m_type = TYPE_SOUSMARIN;
+    m_size = SIZE_SOUSMARIN;
     m_puissance = 1;
 }
 

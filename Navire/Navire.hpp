@@ -15,23 +15,37 @@
 #define NAVIRE_HPP
 
 #include <vector>
+#include "../const.hpp"
 
-#include "Navire.hpp"
+struct Position {
+    int lig;
+    int col;
+};
 
 class Navire {
 public:
     Navire();
     virtual ~Navire();
     
+    int getType();
+    int getSize();
+    int getPuissance();
+    
+    void setPos(std::vector<Position*> pos);
+    
     bool move();
     virtual bool turn();
     virtual void fire();
 protected:
+    int m_type;
     int m_size;
     int m_puissance;
+    std::vector<Position*> m_tabPos;
     
     bool checkMove();
     bool checkTurn();
+    
+    void initPos();
 };
 
 #endif /* NAVIRE_HPP */

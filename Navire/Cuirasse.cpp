@@ -14,7 +14,8 @@
 #include "Cuirasse.hpp"
 
 Cuirasse::Cuirasse() {
-    m_size = 7;
+    m_type = TYPE_CUIRASSE;
+    m_size = SIZE_CUIRASSE;
     m_puissance = 9;
 }
 

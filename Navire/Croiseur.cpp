@@ -14,7 +14,8 @@
 #include "Croiseur.hpp"
 
 Croiseur::Croiseur() {
-    m_size = 5;
+    m_type = TYPE_CROISEUR;
+    m_size = SIZE_CROISEUR;
     m_puissance = 4;
 }
 

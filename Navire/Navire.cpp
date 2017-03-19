@@ -19,6 +19,24 @@ Navire::Navire() {
 Navire::~Navire() {
 }
 
+int Navire::getType() {
+    return m_type;
+}
+
+int Navire::getSize() {
+    return m_size;
+}
+
+int Navire::getPuissance() {
+    return m_puissance;
+}
+
+void Navire::setPos(std::vector<Position*> pos) {
+    for (int i = 0 ; i < pos.size() ; i++) {
+        m_tabPos.push_back(pos[i]);
+    }
+}
+
 bool Navire::move() {
 
 }
@@ -38,3 +56,10 @@ bool Navire::checkTurn() {
 void Navire::fire() {
 
 }
+
+void Navire::initPos() {
+    for (int i = 0 ; i < m_size ; i++) {
+        m_tabPos.push_back(nullptr);
+    }
+}
+

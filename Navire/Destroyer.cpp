@@ -14,7 +14,8 @@
 #include "Destroyer.hpp"
 
 Destroyer::Destroyer() {
-    m_size = 3;
+    m_type = TYPE_DESTROYER;
+    m_size = SIZE_DESTROYER;
     m_puissance = 1;
 }
 
