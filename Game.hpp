@@ -14,9 +14,11 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <stdio.h>
 #include <iostream>
 #include <vector>
 #include <string>
+#include "lib/XPlatform/XPlatform.h"
 
 #include "Box.hpp"
 
@@ -32,6 +34,17 @@
 #define LOOP_IN_GAME 0
 #define LOOP_END_OF_GAME 1
 #define LOOP_GAME_OVER 2
+
+#define PLAYER_ONE 1
+#define PLAYER_TWO 2
+
+#define KEY_NULL 0
+#define KEY_UP 279165
+#define KEY_DOWN 279166
+#define KEY_LEFT 279168
+#define KEY_RIGHT 279167
+#define KEY_SPACE 2732
+#define KEY_ESCAPE 27
 
 class Game {
 public:

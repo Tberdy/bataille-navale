@@ -41,7 +41,7 @@ void xplt_clrscr() {
 }
 
 void xplt_gotoligcol(int lig, int col) {
-    printf("\033[%d;%dH", lig+1, col+1);
+    printf("\033[%d;%dH", lig + 1, col + 1);
 }
 
 #endif

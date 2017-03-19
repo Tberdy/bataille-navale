@@ -20,9 +20,6 @@
 #include "Navire/Destroyer.hpp"
 #include "Navire/SousMarin.hpp"
 
-#define CONTENT_VOID false
-#define CONTENT_BOAT true
-
 class Box {
 public:
     Box();

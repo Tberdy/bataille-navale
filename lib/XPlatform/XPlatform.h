@@ -21,7 +21,6 @@ extern "C" {
 #elif defined (__APPLE__) || defined (__MACH__) || defined (__unix__)
     #define UNIX
     #include <unistd.h>
-    #include <stdio.h>
 #endif
 
 char xplt_getch();
