@@ -50,8 +50,6 @@ private:
     void genBoat(int player, int type);
     bool findPlace(int player, int size, std::vector<Position*>& pos);
     bool checkIfPosValid(int player, const std::vector<Position*>& pos);
-    
-    void debug_displayPos(const std::vector<Position*>& pos);
 };
 
 #endif /* GAME_HPP */

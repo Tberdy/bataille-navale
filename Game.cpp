@@ -14,7 +14,6 @@
 #include "Game.hpp"
 
 Game::Game() {
-    std::cout << "start constructor" << std::endl;
     m_grids.push_back(std::vector<std::vector<Box*> >());
     m_grids.push_back(std::vector<std::vector<Box*> >());
     
@@ -34,7 +33,6 @@ Game::Game() {
     
     initBoat(PLAYER_ONE);
     initBoat(PLAYER_TWO);
-    std::cout << "construct done !!" << std::endl;
 }
 
 Game::~Game() {
@@ -112,7 +110,6 @@ void Game::display(int player) {
 }
 
 void Game::initBoat(int player) {
-    std::cout << "start initBoat" << std::endl;
     for (int i = 0 ; i < NB_CUIRASSE ; i++) {
         genBoat(player, TYPE_CUIRASSE);
     }
@@ -128,7 +125,6 @@ void Game::initBoat(int player) {
 }
 
 void Game::genBoat(int player, int type) {
-    std::cout << "start genBoat" << std::endl;
     Navire* boat = nullptr;
     switch (type) {
         case TYPE_CUIRASSE:
@@ -152,9 +148,7 @@ void Game::genBoat(int player, int type) {
         pos[i] = new Position;
     }
     
-    while(!findPlace(player, size, pos)) {
-        std::cout << "Processing..." << std::endl;
-    }
+    while(!findPlace(player, size, pos)) {}
     
     for (auto elm : pos) {
         m_grids[player][elm->lig][elm->col]->setBoat(boat);
@@ -203,11 +197,3 @@ bool Game::checkIfPosValid(int player, const std::vector<Position*>& pos) {
     
     return true;
 }
-
-void Game::debug_displayPos(const std::vector<Position*>& pos) {
-    for (auto elm : pos) {
-        std::cout << std::endl << "Boat box = " << elm->lig << " " << elm->col << std::endl << std::endl;
-    }
-    
-}
-
