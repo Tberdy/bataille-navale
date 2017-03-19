@@ -39,12 +39,14 @@
 #define PLAYER_TWO 2
 
 #define KEY_NULL 0
-#define KEY_UP 279165
-#define KEY_DOWN 279166
-#define KEY_LEFT 279168
-#define KEY_RIGHT 279167
-#define KEY_SPACE 2732
-#define KEY_ESCAPE 27
+#define KEY_UP 'z'
+#define KEY_DOWN 's'
+#define KEY_LEFT 'q'
+#define KEY_RIGHT 'd'
+#define KEY_SPACE 'h'
+#define KEY_ESCAPE 'p'
+#define KEY_FIRE 'f'
+#define KEY_TURN 't'
 
 class Game {
 public:

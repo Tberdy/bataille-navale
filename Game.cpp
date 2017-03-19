@@ -32,20 +32,7 @@ void Game::loop() {
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         
         move2 = xplt_getch();
-        printf("Key = %i\n", move2);
-        while (xplt_kbhit()) {
-            std::cout << "Complex char" << std::endl;
-            move2 = move2 * 100 + (int) xplt_getch();
-            printf("Key = %i\n", move2);
-        }
-        switch (move2) {
-            case KEY_ESCAPE:
-                std::cout << "echap" << std::endl;
-            case KEY_SPACE:
-                std::cout << "space" << std::endl;
-            case KEY_UP:
-                std::cout << "up" << std::endl;
-        }
+        printf("%i\n", move2);
     }
 }
 
