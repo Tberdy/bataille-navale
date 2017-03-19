@@ -17,6 +17,7 @@ Cuirasse::Cuirasse() {
     m_type = TYPE_CUIRASSE;
     m_size = SIZE_CUIRASSE;
     m_puissance = 9;
+    m_img = IMG_CUIRASSE;
 }
 
 Cuirasse::~Cuirasse() {

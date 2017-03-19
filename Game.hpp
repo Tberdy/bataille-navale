@@ -37,6 +37,8 @@ public:
     virtual ~Game();
     
     void loop();
+    
+    void initBoat(int player);
 private:
     std::vector<std::vector<std::vector<Box*> > > m_grids;
     std::vector<std::vector<Navire*> > m_boats;
@@ -44,11 +46,12 @@ private:
     bool checkKeys(char move, int action);
     void display(int player);
     
-    void initBoat(int player);
+    
     void genBoat(int player, int type);
     bool findPlace(int player, int size, std::vector<Position*>& pos);
     bool checkIfPosValid(int player, const std::vector<Position*>& pos);
     
+    void debug_displayPos(const std::vector<Position*>& pos);
 };
 
 #endif /* GAME_HPP */

@@ -14,12 +14,19 @@
 #include "Game.hpp"
 
 Game::Game() {
+    std::cout << "start constructor" << std::endl;
     m_grids.push_back(std::vector<std::vector<Box*> >());
     m_grids.push_back(std::vector<std::vector<Box*> >());
     
-    for (int i = 0; i < NB_LIG; i++) {
-        m_grids[PLAYER_ONE].push_back(std::vector<Box*>(NB_COL, new Box()));
-        m_grids[PLAYER_TWO].push_back(std::vector<Box*>(NB_COL, new Box()));
+    
+    for (int i = 0 ; i < NB_LIG ; i++) {
+        m_grids[PLAYER_ONE].push_back(std::vector<Box*>());
+        m_grids[PLAYER_TWO].push_back(std::vector<Box*>());
+        
+        for (int j = 0 ; j < NB_COL ; j++) {
+            m_grids[PLAYER_ONE][i].push_back(new Box());
+            m_grids[PLAYER_TWO][i].push_back(new Box());
+        } 
     }
     
     m_boats.push_back(std::vector<Navire*>());
@@ -27,6 +34,7 @@ Game::Game() {
     
     initBoat(PLAYER_ONE);
     initBoat(PLAYER_TWO);
+    std::cout << "construct done !!" << std::endl;
 }
 
 Game::~Game() {
@@ -36,20 +44,23 @@ void Game::loop() {
     int state = LOOP_IN_GAME;
     char move = KEY_NULL;
     
-    while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
+    display(PLAYER_ONE);
+    display(PLAYER_TWO);
+    //while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         
         /// PLAYER 1
-        this->display(PLAYER_ONE);
+        
         
         /// select boat
+        /*
         do {
             move = xplt_getch();
         } while (!checkKeys(move, ACTION_SELECT_BOAT));
+        */
         
         
         
-        
-    }
+    //}
 }
 
 bool Game::checkKeys(char move, int action) {
@@ -71,7 +82,7 @@ bool Game::checkKeys(char move, int action) {
 
 void Game::display(int player) {
     std::cout << " ";
-    for (int i = 0; i < NB_LIG; i++) {
+    for (int i = 0; i < NB_COL; i++) {
         if (i < 10) std::cout << "| " << i;
         else std::cout << "|" << i % 100;
     }
@@ -80,7 +91,14 @@ void Game::display(int player) {
         if (i % 2) {
             std::cout << (char) ((i / 2) % 27 + 97);
             for (int j = 0; j < NB_COL; j++) {
-                std::cout << "|  ";
+                std::cout << "|";
+                
+                if (m_grids[player][(i-1)/2][j]->isFree()) {
+                    std::cout << "  ";
+                } else {
+                    std::cout << m_grids[player][(i-1)/2][j]->getBoat()->getImg();
+                }
+                
             }
             std::cout << "|" << std::endl;
         } else {
@@ -94,6 +112,7 @@ void Game::display(int player) {
 }
 
 void Game::initBoat(int player) {
+    std::cout << "start initBoat" << std::endl;
     for (int i = 0 ; i < NB_CUIRASSE ; i++) {
         genBoat(player, TYPE_CUIRASSE);
     }
@@ -109,6 +128,7 @@ void Game::initBoat(int player) {
 }
 
 void Game::genBoat(int player, int type) {
+    std::cout << "start genBoat" << std::endl;
     Navire* boat = nullptr;
     switch (type) {
         case TYPE_CUIRASSE:
@@ -126,12 +146,20 @@ void Game::genBoat(int player, int type) {
     }
     
     int size = boat->getSize();
-    std::vector<Position*> pos(size, new Position);
-    while(!findPlace(player, size, pos)) {}
+    
+    std::vector<Position*> pos(size, nullptr);
+    for (int i = 0 ; i < pos.size() ; i++) {
+        pos[i] = new Position;
+    }
+    
+    while(!findPlace(player, size, pos)) {
+        std::cout << "Processing..." << std::endl;
+    }
     
     for (auto elm : pos) {
         m_grids[player][elm->lig][elm->col]->setBoat(boat);
     }
+
     m_boats[player].push_back(boat);
 }  
 
@@ -175,3 +203,11 @@ bool Game::checkIfPosValid(int player, const std::vector<Position*>& pos) {
     
     return true;
 }
+
+void Game::debug_displayPos(const std::vector<Position*>& pos) {
+    for (auto elm : pos) {
+        std::cout << std::endl << "Boat box = " << elm->lig << " " << elm->col << std::endl << std::endl;
+    }
+    
+}
+

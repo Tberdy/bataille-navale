@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     Game* game;
+    game = new Game();
     game->loop();
     
     return 0;

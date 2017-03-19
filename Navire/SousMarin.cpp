@@ -17,6 +17,7 @@ SousMarin::SousMarin() {
     m_type = TYPE_SOUSMARIN;
     m_size = SIZE_SOUSMARIN;
     m_puissance = 1;
+    m_img = IMG_SOUSMARIN;
 }
 
 SousMarin::~SousMarin() {

@@ -15,6 +15,7 @@
 #define NAVIRE_HPP
 
 #include <vector>
+#include <string>
 #include "../const.hpp"
 
 struct Position {
@@ -30,6 +31,7 @@ public:
     int getType();
     int getSize();
     int getPuissance();
+    std::string getImg();
     
     void setPos(std::vector<Position*> pos);
     
@@ -40,6 +42,7 @@ protected:
     int m_type;
     int m_size;
     int m_puissance;
+    char m_img;
     std::vector<Position*> m_tabPos;
     
     bool checkMove();

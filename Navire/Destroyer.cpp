@@ -17,6 +17,7 @@ Destroyer::Destroyer() {
     m_type = TYPE_DESTROYER;
     m_size = SIZE_DESTROYER;
     m_puissance = 1;
+    m_img = IMG_DESTROYER;
 }
 
 Destroyer::~Destroyer() {

@@ -31,6 +31,12 @@ int Navire::getPuissance() {
     return m_puissance;
 }
 
+std::string Navire::getImg() {
+    std::string s;
+    s = s + m_img + m_img;
+    return s;
+}
+
 void Navire::setPos(std::vector<Position*> pos) {
     for (int i = 0 ; i < pos.size() ; i++) {
         m_tabPos.push_back(pos[i]);

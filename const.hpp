@@ -32,6 +32,11 @@
 #define SIZE_DESTROYER 3
 #define SIZE_SOUSMARIN 1
 
+#define IMG_CUIRASSE '*'
+#define IMG_CROISEUR 'o'
+#define IMG_DESTROYER '+'
+#define IMG_SOUSMARIN 's'
+
 #define DIR_UP 0
 #define DIR_DOWN 1
 #define DIR_LEFT 2
@@ -41,8 +46,8 @@
 #define LOOP_END_OF_GAME 1
 #define LOOP_GAME_OVER 2
 
-#define PLAYER_ONE 1
-#define PLAYER_TWO 2
+#define PLAYER_ONE 0
+#define PLAYER_TWO 1
 
 #define KEY_NULL '\0'
 #define KEY_UP 'z'
