@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     Game* game;
     game = new Game();
     game->loop();
-    
+    std::cout << "commit test"<< std::endl;
     return 0;
 }
 
