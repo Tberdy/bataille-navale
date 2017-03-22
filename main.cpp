@@ -17,11 +17,9 @@
 
 int main(int argc, char** argv) {
     srand(time(NULL));
-
     Game* game;
     game = new Game();
     game->loop();
-    std::cout << "commit test"<< std::endl;
     return 0;
 }
 

@@ -17,8 +17,8 @@ Game::Game() {
     m_grids.push_back(std::vector<std::vector<Box*> >());
     m_grids.push_back(std::vector<std::vector<Box*> >());
 
-    m_damage.push_back(std::vector < std::vector<bool> >());
-    m_damage.push_back(std::vector < std::vector<bool> >());
+    m_damage.push_back(std::vector <std::vector<bool> >());
+    m_damage.push_back(std::vector <std::vector<bool> >());
 
     for (int i = 0; i < NB_LIG; i++) {
         m_grids[PLAYER_ONE].push_back(std::vector<Box*>());
@@ -64,25 +64,59 @@ void Game::loop() {
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         /// PLAYER 1
+        
         display2(PLAYER_ONE);
-
         /// select boat
         selectBoat(PLAYER_ONE);
-
-
-
-
     }
 }
 
 bool Game::checkKeys(char move, int action) {
     switch (move) {
         case KEY_UP:
+            switch(action)
+            {
+                case ACTION_SELECT_BOAT:
+                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig-1,m_cursors[PLAYER_ONE]->col);
+                    break;
+                    
+            }
+            break;
         case KEY_DOWN:
+            switch(action)
+            {
+                case ACTION_SELECT_BOAT:
+                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig+1,m_cursors[PLAYER_ONE]->col);
+                    break;
+                    
+            }
+            break;
         case KEY_LEFT:
+            switch(action)
+            {
+                case ACTION_SELECT_BOAT:
+                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig,m_cursors[PLAYER_ONE]->col-1);
+                    break;
+                    
+            }
+            break;
         case KEY_RIGHT:
+            switch(action)
+            {
+                case ACTION_SELECT_BOAT:
+                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig,m_cursors[PLAYER_ONE]->col+1);
+                    break;
+                    
+            }
+            break;
         case KEY_SPACE:
-            return (action == ACTION_SELECT_BOAT);
+            switch(action)
+            {
+                case ACTION_SELECT_BOAT:
+                    
+                    break;
+                    
+            }
         case KEY_ESCAPE:
         case KEY_FIRE:
         case KEY_TURN:
@@ -96,14 +130,11 @@ void Game::selectBoat(int player) {
     bool isBoat = false;
     char move = KEY_NULL;
     resetCursor(player);
-    
     while (!isBoat) {
         do {
             move = xplt_getch();
         } while (!checkKeys(move, ACTION_SELECT_BOAT));
-        
-        switch (move) {
-        } 
+ 
     }
 }
 
@@ -265,5 +296,3 @@ void Game::moveCursor(int player, int lig, int col) {
 void Game::resetCursor(int player) {
     xplt_gotoligcol((m_cursors[player]->lig + 1)*2, (m_cursors[player]->col +1)*3);
 }
-
-

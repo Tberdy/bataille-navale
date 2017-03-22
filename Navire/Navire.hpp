@@ -31,8 +31,7 @@ public:
     int getType();
     int getSize();
     int getPuissance();
-    std::string getImg();
-    
+    std::string getImg(); 
     void setPos(std::vector<Position*> pos);
     
     bool move();
