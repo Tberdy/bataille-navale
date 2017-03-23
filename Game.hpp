@@ -50,9 +50,10 @@ private:
     std::vector<std::vector<Navire*> > m_boats;
     std::vector<std::string> m_messageBus;
     std::vector<Cursor*> m_cursors;
+    int m_state;
     
     bool checkKeys(char move, int action);
-    void selectBoat(int player);
+    void eventManager(int player);
     void display2(int player);
     
     void genBoat(int player, int type);

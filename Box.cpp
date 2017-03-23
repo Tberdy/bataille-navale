@@ -11,6 +11,9 @@
  * Created on 18 mars 2017, 18:30
  */
 
+#include <system_error>
+#include <iostream>
+
 #include "Box.hpp"
 
 Box::Box() {
@@ -26,6 +29,11 @@ bool Box::isFree() {
 }
 
 Navire* Box::getBoat() {
+    if(m_boat == nullptr)
+    {
+        std::cerr << "Error : No boat on this box\n";
+        exit(1);
+    }
     return m_boat;
 }
 

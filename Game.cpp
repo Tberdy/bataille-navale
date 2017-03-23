@@ -14,11 +14,12 @@
 #include "Game.hpp"
 
 Game::Game() {
+    m_state = STATE_DISPLAY;
     m_grids.push_back(std::vector<std::vector<Box*> >());
     m_grids.push_back(std::vector<std::vector<Box*> >());
 
-    m_damage.push_back(std::vector <std::vector<bool> >());
-    m_damage.push_back(std::vector <std::vector<bool> >());
+    m_damage.push_back(std::vector < std::vector<bool> >());
+    m_damage.push_back(std::vector < std::vector<bool> >());
 
     for (int i = 0; i < NB_LIG; i++) {
         m_grids[PLAYER_ONE].push_back(std::vector<Box*>());
@@ -45,14 +46,14 @@ Game::Game() {
     for (int i = 0; i < 5; i++) {
         m_messageBus.push_back("");
     }
-    
+
     m_cursors.push_back(new Cursor);
     m_cursors.push_back(new Cursor);
     m_cursors[PLAYER_ONE]->lig = 7;
     m_cursors[PLAYER_ONE]->col = 7;
     m_cursors[PLAYER_TWO]->lig = 7;
     m_cursors[PLAYER_TWO]->col = 7;
-    
+
 }
 
 Game::~Game() {
@@ -60,81 +61,81 @@ Game::~Game() {
 
 void Game::loop() {
     int state = LOOP_IN_GAME;
-    
+
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         /// PLAYER 1
-        
-        display2(PLAYER_ONE);
+
+        if (m_state == STATE_DISPLAY)display2(PLAYER_ONE);
         /// select boat
-        selectBoat(PLAYER_ONE);
+        eventManager(PLAYER_ONE);
     }
 }
 
-bool Game::checkKeys(char move, int action) {
+bool Game::checkKeys(char move, int state) {
     switch (move) {
         case KEY_UP:
-            switch(action)
-            {
-                case ACTION_SELECT_BOAT:
-                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig-1,m_cursors[PLAYER_ONE]->col);
-                    break;
-                    
-            }
+            if (state == STATE_SELECTION) return true;
             break;
         case KEY_DOWN:
-            switch(action)
-            {
-                case ACTION_SELECT_BOAT:
-                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig+1,m_cursors[PLAYER_ONE]->col);
-                    break;
-                    
-            }
+            if (state == STATE_SELECTION) return true;
             break;
         case KEY_LEFT:
-            switch(action)
-            {
-                case ACTION_SELECT_BOAT:
-                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig,m_cursors[PLAYER_ONE]->col-1);
-                    break;
-                    
-            }
+            if (state == STATE_SELECTION) return true;
             break;
         case KEY_RIGHT:
-            switch(action)
-            {
-                case ACTION_SELECT_BOAT:
-                    moveCursor(PLAYER_ONE,m_cursors[PLAYER_ONE]->lig,m_cursors[PLAYER_ONE]->col+1);
-                    break;
-                    
-            }
+            if (state == STATE_SELECTION) return true;
             break;
         case KEY_SPACE:
-            switch(action)
-            {
-                case ACTION_SELECT_BOAT:
-                    
-                    break;
-                    
-            }
+            if (state == STATE_SELECTION) return true;
+            break;
         case KEY_ESCAPE:
         case KEY_FIRE:
         case KEY_TURN:
-            return (action == ACTION_SELECT_ACTION);
         default:
             return false;
     }
 }
 
-void Game::selectBoat(int player) {
-    bool isBoat = false;
+void Game::eventManager(int player) {
+
     char move = KEY_NULL;
-    resetCursor(player);
-    while (!isBoat) {
+    //States of the game
+    if (m_state == STATE_DISPLAY) {
+        m_state = STATE_SELECTION;
+    }
+    //Cursor selection
+    if (m_state == STATE_SELECTION) {
+        resetCursor(player);
         do {
             move = xplt_getch();
-        } while (!checkKeys(move, ACTION_SELECT_BOAT));
- 
+
+
+        } while (!checkKeys(move, STATE_SELECTION));
+        switch (move) {
+            case KEY_UP:
+                if (m_cursors[player]->lig > 0) moveCursor(player, m_cursors[player]->lig - 1, m_cursors[player]->col);
+                break;
+            case KEY_DOWN:
+                if (m_cursors[player]->lig < NB_LIG - 1) moveCursor(player, m_cursors[player]->lig + 1, m_cursors[player]->col);
+                break;
+            case KEY_LEFT:
+                if (m_cursors[player]->col > 0)moveCursor(player, m_cursors[player]->lig, m_cursors[player]->col - 1);
+                break;
+            case KEY_RIGHT:
+                if (m_cursors[player]->col < NB_COL - 1)moveCursor(player, m_cursors[player]->lig, m_cursors[player]->col + 1);
+                break;
+            case KEY_SPACE:
+                xplt_gotoligcol(30, 0);
+                std::cout << "\"" << m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getImg() << "\"";
+                resetCursor(player);
+                break;
+            default:
+                break;
+        }
+
+
+
     }
 }
 
@@ -288,11 +289,11 @@ bool Game::checkIfPosValid(int player, const std::vector<Position*>& pos) {
 }
 
 void Game::moveCursor(int player, int lig, int col) {
-    xplt_gotoligcol((lig+1)*2, (col+1)*3);
+    xplt_gotoligcol((lig + 1)*2, (col + 1)*3);
     m_cursors[player]->lig = lig;
     m_cursors[player]->col = col;
 }
 
 void Game::resetCursor(int player) {
-    xplt_gotoligcol((m_cursors[player]->lig + 1)*2, (m_cursors[player]->col +1)*3);
+    xplt_gotoligcol((m_cursors[player]->lig + 1)*2, (m_cursors[player]->col + 1)*3);
 }

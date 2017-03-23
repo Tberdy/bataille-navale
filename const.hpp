@@ -47,7 +47,7 @@
 #define LOOP_END_OF_GAME 1
 #define LOOP_GAME_OVER 2
 
-#define PLAYER_ONE 0
+#define PLAYER_ONE 1
 #define PLAYER_TWO 1
 
 #define KEY_NULL '\0'
@@ -60,8 +60,8 @@
 #define KEY_FIRE 'f'
 #define KEY_TURN 't'
 
-#define ACTION_SELECT_BOAT 1
-#define ACTION_SELECT_ACTION 2
 
+#define STATE_DISPLAY 0
+#define STATE_SELECTION 1
 #endif /* CONST_HPP */
 
