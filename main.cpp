@@ -14,12 +14,11 @@
 #include <cstdlib>
 #include <ctime>
 #include "Game.hpp"
+#include "Menu.hpp"
 
 int main(int argc, char** argv) {
-    srand(time(NULL));
-    Game* game;
-    game = new Game();
-    game->loop();
+    Menu menu;
+    menu.afficher_menu();
     return 0;
 }
 
