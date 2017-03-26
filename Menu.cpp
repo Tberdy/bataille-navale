@@ -10,79 +10,62 @@
  *
  * Created on 9 mars 2017, 23:02
  */
-#include "Game.hpp"
+
 #include "Menu.hpp"
-#include "console.h"
-#include "iostream"
-#include <windows.h>
-#include<fstream>
-#include <cstdlib>
-#include <ctime>
-#include "conio.h"
-#include <cstdlib>
 
-Menu::Menu() : m_choix(0)
-{
-    pConsole = Console::getInstance();
-}
-
-Menu::Menu(const Menu& orig) {
-
+Menu::Menu() : m_choix(0) {
 }
 
 Menu::~Menu() {
 
 }
 
-void Menu::afficher_regles(){
+void Menu::afficher_regles() {
     Menu menu;
-    const char*filename ="Regles.txt";
-    std::ifstream ifs (filename);
+    const char*filename = "Regles.txt";
+    std::ifstream ifs(filename);
     std::string line;
-    while (std::getline(ifs,line))
-    std::cout<<line<<std::endl;
+    while (std::getline(ifs, line))
+        std::cout << line << std::endl;
     ifs.close();
-    m_choix=getch();
-    if (m_choix=='r'){
-    system("cls");
-    menu.afficher_menu();
+    m_choix = xplt_getch();
+    while (m_choix != 'r') {
+        m_choix = xplt_getch();
     }
+    xplt_clrscr();
+    menu.afficher_menu();
 }
 
 void Menu::afficher_menu() {
     Menu menu;
-    const char*filename ="graffic.txt";
-    std::ifstream ifs (filename);
+    const char*filename = "graffic.txt";
+    std::ifstream ifs(filename);
     std::string line;
-    while (std::getline(ifs,line))
-    std::cout<<line<<std::endl;
+    while (std::getline(ifs, line))
+        std::cout << line << std::endl;
     ifs.close();
-    m_choix=getch();
+    m_choix = xplt_getch();
 
-        switch(m_choix)
-        {
-        case '1' :
-            system("cls");
-            srand(time(NULL));
+    switch (m_choix) {
+        case '1':
+            xplt_clrscr();
             Game* game;
             game = new Game();
             game->loop();
-            m_choix=0;
+            m_choix = 0;
             break;
-        case '2' :
-            system("cls");
+        case '2':
+            xplt_clrscr();
             std::cout << "Charger partie" << std::endl;
-
             break;
-        case '3' :
-            system("cls");
+        case '3':
+            xplt_clrscr();
             menu.afficher_regles();
-
             break;
-        case '4' :
+        case '4':
             exit(0);
             break;
-        }
+    }
 
 }
 

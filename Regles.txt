@@ -8,26 +8,27 @@
         							     |___/                            |__/            
 
 
-			Pour revenir sur la page précédente appuyez sur R.
+			Pour revenir sur la page prÃ©cÃ©dente appuyez sur R.
 				
-			Les bateaux seront placés aléatoirement en début de partie.
-			Le joueur 1 commence toujours. Ensuite chaque joueur joue à tour de rôle sans regarder la grille de son adversaire.
-			A chaque tour de, le joueur à le choix entre 3 actions:
-			- Déplacer un navire d'une seule case. Seulement horizontalement ou verticalement (les déplacements diagonaux ne sont pas autorisés).
-			- Tourner un navire de 90°. Les cuirassés prennent 2 tours à faire tourner.
-			- Tirer. Le joueur donne les coordonnées d'une case cible. Le tir d'un destroyer dévoile un carré de 4*4 cases dans la grille adverse (la visivilité ne dure que quelques secondes).
+			Les bateaux seront placÃ©s alÃ©atoirement en dÃ©but de partie.
+			Le joueur 1 commence toujours. Ensuite chaque joueur joue Ã  tour de rÃ´le sans regarder la grille de son adversaire.
+			A chaque tour de, le joueur Ã  le choix entre 3 actions:
+			- DÃ©placer un navire d'une seule case. Seulement horizontalement ou verticalement (les dÃ©placements diagonaux ne sont pas autorisÃ©s).
+			- Tourner un navire de 90Â°. Les cuirassÃ©s prennent 2 tours Ã  faire tourner.
+			- Tirer. Le joueur donne les coordonnÃ©es d'une case cible. Le tir d'un destroyer dÃ©voile un carrÃ© de 4*4 cases dans 
+                        la grille adverse (la visivilitÃ© ne dure que quelques secondes).
 			Pour couler un navire, il faut toucher toutes les cases qu'il occupe. 
-			Attention: les sous-marins ne peuvent détruire que les sous-marins. 
-			Si le tir touche un bateau, la case est marquée sur la grille n°2.
+			Attention: les sous-marins ne peuvent dÃ©truire que les sous-marins. 
+			Si le tir touche un bateau, la case est marquÃ©e sur la grille nÂ°2.
 			
-			La partie sera gagner par le premier joueur à avoir coulé tous les bateaux de son adversaire.
+			La partie sera gagner par le premier joueur Ã  avoir coulÃ© tous les bateaux de son adversaire.
 
 
 			Les touches du jeu:
 			- "z" permet de monter dans la grille.
 			- "s" permet de descendre dans la grille
-			- "q" permet d'aller à gauche dans la grille
-			- "d" permet d'aller à droite dans la grille
+			- "q" permet d'aller Ã  gauche dans la grille
+			- "d" permet d'aller Ã  droite dans la grille
 			- " " permet de selectionner une case cible
 			- " " permet de bouger son navire d'une case
 			- " " permet de tourner son navire
