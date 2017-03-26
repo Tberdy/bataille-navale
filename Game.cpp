@@ -14,8 +14,6 @@
 #include "Game.hpp"
 
 Game::Game() {
-    m_case_selected.lig = 0;
-    m_case_selected.col = 0;
     m_state = STATE_DISPLAY;
     m_grids.push_back(std::vector<std::vector<Box*> >());
     m_grids.push_back(std::vector<std::vector<Box*> >());
@@ -119,8 +117,6 @@ void Game::eventManager(int player) {
     //States of the game
     if (m_state == STATE_DISPLAY) {
         m_state = STATE_SELECTION;
-        m_case_selected.lig = 0;
-        m_case_selected.col = 0;
     }
     //Cursor selection
     if (m_state == STATE_SELECTION) {
@@ -144,12 +140,9 @@ void Game::eventManager(int player) {
                 if (m_cursors[player]->col < NB_COL - 1)moveCursor(player, m_cursors[player]->lig, m_cursors[player]->col + 1);
                 break;
             case KEY_SPACE:
-                if (!m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->isFree()) {
-                    m_state = STATE_SELECTED;
-                    m_case_selected.lig = m_cursors[player]->lig;
-                    m_case_selected.col = m_cursors[player]->col;
-
-                }
+                xplt_gotoligcol(30, 0);
+                std::cout << "\"" << m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getImg() << "\"";
+                resetCursor(player);
                 break;
             case 'r':
                 m_state = STATE_DISPLAY;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   Menu.hpp
  * Author: Tberdy
  *
@@ -14,13 +14,22 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
+#include <iostream>
+#include <fstream>
+
+#include "Game.hpp"
+#include "lib/XPlatform/XPlatform.h"
+
+
+
 class Menu {
 public:
     Menu();
-    Menu(const Menu& orig);
     virtual ~Menu();
+    void afficher_menu();
+    void afficher_regles();
 private:
-
+    int m_choix;
 };
 
 #endif /* MENU_HPP */

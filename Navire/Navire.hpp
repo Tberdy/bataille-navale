@@ -37,6 +37,7 @@ public:
     char getOppositeDir();
     std::string getImg(); 
     void setPos(std::vector<Position*> pos);
+
     std::vector<Position*> getPos();
     Position* getFrontPosition();
     Position* getOppositeFrontPosition();
