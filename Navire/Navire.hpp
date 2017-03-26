@@ -34,7 +34,7 @@ public:
     std::string getImg(); 
     void setPos(std::vector<Position*> pos);
     
-    bool move();
+    bool move(char dir);
     virtual bool turn();
     virtual void fire();
 protected:

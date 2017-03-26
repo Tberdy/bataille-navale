@@ -51,6 +51,7 @@ private:
     std::vector<std::string> m_messageBus;
     std::vector<Cursor*> m_cursors;
     int m_state;
+    Cursor m_case_selected;
     
     bool checkKeys(char move, int action);
     void eventManager(int player);
