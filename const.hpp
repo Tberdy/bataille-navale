@@ -42,6 +42,7 @@
 #define DIR_DOWN 1
 #define DIR_LEFT 2
 #define DIR_RIGHT 3
+#define DIR_UNKNOW 4
 
 #define LOOP_IN_GAME 0
 #define LOOP_END_OF_GAME 1

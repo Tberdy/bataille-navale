@@ -16,6 +16,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "../const.hpp"
 
 struct Position {
@@ -31,16 +32,22 @@ public:
     int getType();
     int getSize();
     int getPuissance();
+    char getDir();
+    void setDir(char dir);
+    char getOppositeDir();
     std::string getImg(); 
     void setPos(std::vector<Position*> pos);
-    
-    bool move(char dir);
+    std::vector<Position*> getPos();
+    Position* getFrontPosition();
+    Position* getOppositeFrontPosition();
+    std::vector<Position*> generatePositionsTo(char dir);
     virtual bool turn();
     virtual void fire();
 protected:
     int m_type;
     int m_size;
     int m_puissance;
+    char m_dir;
     char m_img;
     std::vector<Position*> m_tabPos;
     

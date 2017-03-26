@@ -57,8 +57,9 @@ private:
     void eventManager(int player);
     void display2(int player);
     
+    char keyToDir(char key);
     void genBoat(int player, int type);
-    bool findPlace(int player, int size, std::vector<Position*>& pos);
+    bool findPlace(int player, int size, std::vector<Position*>& pos,char& dir);
     bool checkIfPosValid(int player, const std::vector<Position*>& pos);
     
     void moveCursor(int player, int lig, int col);
