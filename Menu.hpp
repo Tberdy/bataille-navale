@@ -21,6 +21,7 @@ public:
     Menu(const Menu& orig);
     virtual ~Menu();
     void afficher_menu();
+    void afficher_regles();
 private:
     int m_choix;
     Console* pConsole;

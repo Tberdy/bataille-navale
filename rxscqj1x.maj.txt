@@ -1,0 +1,26 @@
+﻿Revert "Merge branch 'master' of https://github.com/Tberdy/bataille-navale"
+
+This reverts commit 3be4a3d35c517f3f73d2cd6861966513f0543844, reversing
+changes made to db774d37774749a122c91500854f4149d33c2830.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   Game.cpp
+#	modified:   Game.hpp
+#	modified:   Navire/Navire.cpp
+#	modified:   Navire/Navire.hpp
+#	modified:   const.hpp
+#
+# Changes not staged for commit:
+#	modified:   Menu.cpp
+#	modified:   Menu.hpp
+#	modified:   graffic.txt
+#
+# Untracked files:
+#	Regles.txt
+#
+

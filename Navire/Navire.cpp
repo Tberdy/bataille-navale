@@ -43,12 +43,8 @@ void Navire::setPos(std::vector<Position*> pos) {
     }
 }
 
-bool Navire::move(char dir) {
-    std::vector<Position*> newPos;
-    for(auto pos : new)
-    {
-        
-    }
+bool Navire::move() {
+
 }
 
 bool Navire::checkMove() {

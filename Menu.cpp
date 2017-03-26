@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "conio.h"
+#include <cstdlib>
 
 Menu::Menu() : m_choix(0)
 {
@@ -33,10 +34,23 @@ Menu::~Menu() {
 
 }
 
+void Menu::afficher_regles(){
+    Menu menu;
+    const char*filename ="Regles.txt";
+    std::ifstream ifs (filename);
+    std::string line;
+    while (std::getline(ifs,line))
+    std::cout<<line<<std::endl;
+    ifs.close();
+    m_choix=getch();
+    if (m_choix=='r'){
+    system("cls");
+    menu.afficher_menu();
+    }
+}
+
 void Menu::afficher_menu() {
-    bool quit = false;
-    while(quit ==false)
-    {
+    Menu menu;
     const char*filename ="graffic.txt";
     std::ifstream ifs (filename);
     std::string line;
@@ -53,20 +67,23 @@ void Menu::afficher_menu() {
             Game* game;
             game = new Game();
             game->loop();
+            m_choix=0;
             break;
-        /*case '2' :
+        case '2' :
             system("cls");
             std::cout << "Charger partie" << std::endl;
-            system("cls");
-            break;*/
+
+            break;
         case '3' :
             system("cls");
-            quit=true;
+            menu.afficher_regles();
+
             break;
-        default:
+        case '4' :
+            exit(0);
             break;
         }
 
 }
-}
+
 
