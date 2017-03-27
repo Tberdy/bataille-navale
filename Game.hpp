@@ -46,14 +46,16 @@ public:
     void initBoat(int player);
 private:
     std::vector<std::vector<std::vector<Box*> > > m_grids;
-    std::vector<std::vector<std::vector<bool> > > m_damage;
     std::vector<std::vector<Navire*> > m_boats;
     std::vector<std::string> m_messageBus;
     std::vector<Cursor*> m_cursors;
     int m_state;
     
+    int other(int player);
     bool checkKeys(char move, int action);
     void eventManager(int player);
+    void fire(int player, Navire* attaquant, Box* cible);
+    void makeVisible(int player, Box* cible);
     void display2(int player);
     
     char keyToDir(char key);

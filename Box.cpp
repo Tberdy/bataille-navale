@@ -16,9 +16,11 @@
 
 #include "Box.hpp"
 
-Box::Box() {
+Box::Box(int lig, int col) {
     m_boat = nullptr;
     m_visibility = false;
+    m_lig = lig;
+    m_col = col;
 }
 
 Box::~Box() {
@@ -41,6 +43,19 @@ void Box::setBoat(Navire* boat) {
     m_boat = boat;
 }
 
+bool Box::isVisible() {
+    return m_visibility;
+}
 
+void Box::setVisibility(bool visibility) {
+    m_visibility = visibility;
+}
 
+int Box::getLig() {
+    return m_lig;
+}
+
+int Box::getCol() {
+    return m_col;
+}
 

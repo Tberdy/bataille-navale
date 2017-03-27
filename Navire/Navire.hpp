@@ -22,6 +22,7 @@
 struct Position {
     int lig;
     int col;
+    bool damage;
 };
 
 class Navire {
@@ -42,12 +43,16 @@ public:
     Position* getFrontPosition();
     Position* getOppositeFrontPosition();
     std::vector<Position*> generatePositionsTo(char dir);
+    bool isPosDamage(int lig, int col);
     virtual bool turn();
-    virtual void fire();
+    
+    bool hasRocket();
+    void useRocket();
 protected:
     int m_type;
     int m_size;
     int m_puissance;
+    int m_nbRocket;
     char m_dir;
     char m_img;
     std::vector<Position*> m_tabPos;

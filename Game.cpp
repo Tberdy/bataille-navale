@@ -18,27 +18,18 @@ Game::Game() {
     m_grids.push_back(std::vector<std::vector<Box*> >());
     m_grids.push_back(std::vector<std::vector<Box*> >());
 
-    m_damage.push_back(std::vector < std::vector<bool> >());
-    m_damage.push_back(std::vector < std::vector<bool> >());
-
     for (int i = 0; i < NB_LIG; i++) {
         m_grids[PLAYER_ONE].push_back(std::vector<Box*>());
         m_grids[PLAYER_TWO].push_back(std::vector<Box*>());
 
-        m_damage[PLAYER_ONE].push_back(std::vector<bool>(NB_COL, false));
-        m_damage[PLAYER_TWO].push_back(std::vector<bool>(NB_COL, false));
-
         for (int j = 0; j < NB_COL; j++) {
-            m_grids[PLAYER_ONE][i].push_back(new Box());
-            m_grids[PLAYER_TWO][i].push_back(new Box());
+            m_grids[PLAYER_ONE][i].push_back(new Box(i, j));
+            m_grids[PLAYER_TWO][i].push_back(new Box(i, j));
         }
     }
 
     m_boats.push_back(std::vector<Navire*>());
     m_boats.push_back(std::vector<Navire*>());
-
-    m_damage.push_back(std::vector < std::vector<bool> >());
-    m_damage.push_back(std::vector < std::vector<bool> >());
 
     initBoat(PLAYER_ONE);
     initBoat(PLAYER_TWO);
@@ -62,6 +53,7 @@ Game::~Game() {
 void Game::loop() {
     int state = LOOP_IN_GAME;
 
+    //display2(PLAYER_ONE);
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         /// PLAYER 1
@@ -71,18 +63,23 @@ void Game::loop() {
         /// select boat
         eventManager(PLAYER_ONE);
     }
+
 }
-char Game::keyToDir(char key)
-{
-    switch(key)
-    {
-        case KEY_UP : return DIR_UP;
-        case KEY_DOWN : return DIR_DOWN;
-        case KEY_LEFT : return DIR_LEFT;
-        case KEY_RIGHT : return DIR_RIGHT;
+
+char Game::keyToDir(char key) {
+    switch (key) {
+        case KEY_UP: return DIR_UP;
+        case KEY_DOWN: return DIR_DOWN;
+        case KEY_LEFT: return DIR_LEFT;
+        case KEY_RIGHT: return DIR_RIGHT;
     }
     return DIR_UNKNOW;
 }
+
+int Game::other(int player) {
+    return (player + 1) % 2;
+}
+
 bool Game::checkKeys(char move, int state) {
     switch (move) {
         case KEY_UP:
@@ -160,13 +157,13 @@ void Game::eventManager(int player) {
         } while (!checkKeys(move, STATE_SELECTED));
         Position* targetPos = new Position;
         //Movement in the same direction of the boat
-        
+
         char dirMove = keyToDir(move);
-        std::cout << "move : " << (int)dirMove << "dir: " << (int)m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir();
+        std::cout << "move : " << (int) dirMove << "dir: " << (int) m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir();
         if (dirMove == m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir()) {
             std::cout << std::endl << "a";
             switch (dirMove) {
-                
+
                 case KEY_UP:
                     targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
                     targetPos->lig--;
@@ -238,11 +235,9 @@ void Game::eventManager(int player) {
                     }
                     m_state = STATE_DISPLAY;
                 }
-            }
-            else
-            {
-            std::cout << "Vous ne pouvez pas vous déplacez ici.";
-            m_state = STATE_SELECTION;
+            } else {
+                std::cout << "Vous ne pouvez pas vous déplacez ici.";
+                m_state = STATE_SELECTION;
             }
         }
 
@@ -298,6 +293,42 @@ void Game::eventManager(int player) {
 
 }
 
+void Game::fire(int player, Navire* attaquant, Box* cible) {
+    if (attaquant->hasRocket()) {
+        makeVisible(player, cible);
+        attaquant->useRocket();
+    }
+    if (cible->isFree()) return;
+
+    if (attaquant->getType() == TYPE_SOUSMARIN && cible->getBoat()->getType() != TYPE_SOUSMARIN) return;
+
+    cible->getBoat()->getPos();
+    for (int i = 0; i < cible->getBoat()->getSize(); i++) {
+        if (cible->getBoat()->getPos()[i]->lig == cible->getLig() && cible->getBoat()->getPos()[i]->col == cible->getCol()) {
+            cible->getBoat()->getPos()[i]->damage = true;
+        }
+    }
+}
+
+void Game::makeVisible(int player, Box* cible) {
+    int lig = cible->getLig() - 1;
+    int col = cible->getCol() - 1;
+    int ligEnd = lig + 4;
+    int colEnd = col + 4;
+
+    for (int i = lig; i < ligEnd; i++) {
+        for (int j = col; j < colEnd; j++) {
+            if (i >= 0 && i < NB_LIG && j >= 0 && j < NB_COL) {
+                m_grids[other(player)][i][j]->setVisibility(true);
+            }
+        }
+    }
+
+
+    cible->setVisibility(true);
+
+}
+
 void Game::display2(int player) {
     xplt_clrscr();
     xplt_gotoligcol(0, 0);
@@ -331,10 +362,18 @@ void Game::display2(int player) {
             for (int j = 0; j < NB_COL; j++) {
                 std::cout << "|";
 
-                if (!m_damage[player][(i - 1) / 2][j]) {
-                    std::cout << "  ";
+                if (m_grids[other(player)][(i - 1) / 2][j]->isFree()) {
+                    if (m_grids[other(player)][(i - 1) / 2][j]->isVisible()) {
+                        std::cout << "  ";
+                    } else {
+                        std::cout << IMG_HIDDEN << IMG_HIDDEN;
+                    }
                 } else {
-                    std::cout << IMG_DAMAGE << IMG_DAMAGE;
+                    if (m_grids[other(player)][(i - 1) / 2][j]->getBoat()->isPosDamage((i - 1) / 2, j)) {
+                        std::cout << IMG_DAMAGE << IMG_DAMAGE;
+                    } else {
+                        std::cout << IMG_HIDDEN << IMG_HIDDEN;
+                    }
                 }
 
             }
@@ -398,7 +437,7 @@ void Game::genBoat(int player, int type) {
         pos[i] = new Position;
     }
     char dir;
-    while (!findPlace(player, size, pos,dir)) {
+    while (!findPlace(player, size, pos, dir)) {
     }
     boat->setDir(dir);
     boat->setPos(pos);
@@ -411,9 +450,10 @@ void Game::genBoat(int player, int type) {
 
 bool Game::findPlace(int player, int size, std::vector<Position*>& pos, char& dir) {
     dir = rand() % 4;
-  
+
     pos[0]->lig = rand() % NB_LIG;
     pos[0]->col = rand() % NB_COL;
+    pos[0]->damage = false;
 
     for (int i = 1; i < size; i++) {
         switch (dir) {
@@ -434,6 +474,7 @@ bool Game::findPlace(int player, int size, std::vector<Position*>& pos, char& di
                 pos[i]->col = pos[i - 1]->col + 1;
                 break;
         }
+        pos[i]->damage = false;
     }
 
     return checkIfPosValid(player, pos);

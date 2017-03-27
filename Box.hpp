@@ -22,15 +22,21 @@
 
 class Box {
 public:
-    Box();
+    Box(int lig, int col);
     virtual ~Box();
     
     bool isFree();
     Navire* getBoat();
     void setBoat(Navire* boat);
+    bool isVisible();
+    void setVisibility(bool visibility);
+    int getLig();
+    int getCol();
 private:
     Navire* m_boat;
     bool m_visibility;
+    int m_lig;
+    int m_col;
 };
 
 #endif /* BOX_HPP */

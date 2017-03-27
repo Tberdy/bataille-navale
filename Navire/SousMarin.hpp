@@ -20,6 +20,8 @@ class SousMarin : public Navire {
 public:
     SousMarin();
     virtual ~SousMarin();
+    
+    //void fire(Navire* cible, int cible_lig, int cible_col) override;
 private:
 
 };

@@ -20,10 +20,8 @@ class Destroyer : public Navire {
 public:
     Destroyer();
     virtual ~Destroyer();
-    
-    void fire() override;
 private:
-
+    
 };
 
 #endif /* DESTROYER_HPP */

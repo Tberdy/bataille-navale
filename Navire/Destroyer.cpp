@@ -18,13 +18,9 @@ Destroyer::Destroyer() {
     m_size = SIZE_DESTROYER;
     m_puissance = 1;
     m_img = IMG_DESTROYER;
+    m_nbRocket = 1;
 }
 
 Destroyer::~Destroyer() {
 }
-
-void Destroyer::fire() {
-
-}
-
 

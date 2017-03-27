@@ -18,6 +18,7 @@ Cuirasse::Cuirasse() {
     m_size = SIZE_CUIRASSE;
     m_puissance = 9;
     m_img = IMG_CUIRASSE;
+    m_nbRocket = 0;
 }
 
 Cuirasse::~Cuirasse() {

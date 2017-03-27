@@ -158,6 +158,14 @@ std::vector<Position*> Navire::generatePositionsTo(char dir) {
     return newPosTab;
 }
 
+bool Navire::isPosDamage(int lig, int col) {
+    for (auto pos : m_tabPos) {
+        if (lig == pos->lig && col == pos->col) return pos->damage;
+    }
+    std::cerr << "Error : Boat pointer is corrupted\n";
+    exit(1);
+}
+
 bool Navire::checkMove() {
 
 }
@@ -170,13 +178,18 @@ bool Navire::checkTurn() {
 
 }
 
-void Navire::fire() {
-
-}
-
 void Navire::initPos() {
     for (int i = 0; i < m_size; i++) {
         m_tabPos.push_back(nullptr);
     }
 }
+
+bool Navire::hasRocket() {
+    return (m_nbRocket > 0);
+}
+
+void Navire::useRocket() {
+    m_nbRocket--;
+}
+
 

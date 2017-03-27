@@ -18,6 +18,7 @@ Croiseur::Croiseur() {
     m_size = SIZE_CROISEUR;
     m_puissance = 4;
     m_img = IMG_CROISEUR;
+    m_nbRocket = 0;
 }
 
 Croiseur::~Croiseur() {
