@@ -29,7 +29,11 @@ Box::~Box() {
 bool Box::isFree() {
     return (m_boat == nullptr);
 }
-
+void Box::setFree()
+{
+    delete m_boat;
+    m_boat=nullptr;
+}
 Navire* Box::getBoat() {
     if(m_boat == nullptr)
     {

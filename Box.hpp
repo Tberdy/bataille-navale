@@ -26,6 +26,7 @@ public:
     virtual ~Box();
     
     bool isFree();
+    void setFree();
     Navire* getBoat();
     void setBoat(Navire* boat);
     bool isVisible();

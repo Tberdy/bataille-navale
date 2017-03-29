@@ -17,6 +17,10 @@ Navire::Navire() {
 }
 
 Navire::~Navire() {
+    for(auto pos : m_tabPos)
+    {
+        delete pos;
+    }
 }
 
 int Navire::getType() {
