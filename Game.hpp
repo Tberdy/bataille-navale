@@ -51,6 +51,7 @@ private:
     std::vector<Cursor*> m_cursors;
     int m_state;
     std::vector<int> m_tabState;
+    int m_memoryMove;
     
     int other(int player);
     bool checkKeys(char move, int action);
