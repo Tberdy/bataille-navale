@@ -61,6 +61,7 @@
 #define KEY_ESCAPE 'p'
 #define KEY_FIRE 'f'
 #define KEY_TURN 't'
+#define KEY_MOVE 'm'
 
 #define STATE_DISPLAY 0
 #define STATE_SELECTION 1

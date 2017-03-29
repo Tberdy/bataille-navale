@@ -44,6 +44,9 @@ Game::Game() {
     m_cursors[PLAYER_ONE]->col = 7;
     m_cursors[PLAYER_TWO]->lig = 7;
     m_cursors[PLAYER_TWO]->col = 7;
+    
+    m_tabState.push_back(STATE_DISPLAY);
+    m_tabState.push_back(STATE_DISPLAY);
 
 }
 
@@ -99,6 +102,9 @@ bool Game::checkKeys(char move, int state) {
             break;
         case KEY_ESCAPE:
             if (state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            break;
+        case KEY_MOVE:
+            if (state == STATE_SELECTED) return true;
             break;
         case KEY_TURN:
             if (state == STATE_SELECTED) return true;
@@ -285,32 +291,12 @@ void Game::eventManager(int player) {
 
     //Rotation
     if (m_state == STATE_ROTATION) {
-        do {
-            move = xplt_getch();
-        } while (!checkKeys(move, STATE_SELECTED));
-        switch (move) {
-            case KEY_UP:
-                //rotation up
-                //if(rotation made) m_stage=STATE_END_OF_ACTION;
-                break;
-            case KEY_DOWN:
-                //rotation down
-                break;
-            case KEY_LEFT:
-                //rotation left
-                break;
-            case KEY_RIGHT:
-                //rotation right
-                break;
-            case KEY_ESCAPE:
-                //go back to slection
-                m_state = STATE_SELECTION;
-                break;
-
-            default:
-                return false;
+        if (turn(player, m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat())) {
+            m_state = STATE_END_OF_ACTION;
+        } else {
+            m_state = STATE_SELECTION;
         }
-
+        
     }
     
     //Fire
@@ -341,7 +327,7 @@ void Game::eventManager(int player) {
                 break;
 
             default:
-                return false;
+                return;
         }
 
     }
