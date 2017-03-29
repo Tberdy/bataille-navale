@@ -83,16 +83,16 @@ int Game::other(int player) {
 bool Game::checkKeys(char move, int state) {
     switch (move) {
         case KEY_UP:
-            if (state == STATE_SELECTION || state == STATE_SELECTED) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
             break;
         case KEY_DOWN:
-            if (state == STATE_SELECTION || state == STATE_SELECTED) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
             break;
         case KEY_LEFT:
-            if (state == STATE_SELECTION || state == STATE_SELECTED) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
             break;
         case KEY_RIGHT:
-            if (state == STATE_SELECTION || state == STATE_SELECTED) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
             break;
         case KEY_SPACE:
             if (state == STATE_SELECTION) return true;
@@ -139,6 +139,7 @@ void Game::eventManager(int player) {
             case KEY_SPACE:
                 xplt_gotoligcol(30, 0);
                 std::cout << "\"" << m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getImg() << "\"";
+                m_state = STATE_SELECTED;
                 resetCursor(player);
                 break;
             case 'r':
@@ -161,33 +162,41 @@ void Game::eventManager(int player) {
         char dirMove = keyToDir(move);
         std::cout << "move : " << (int) dirMove << "dir: " << (int) m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir();
         if (dirMove == m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir()) {
-            std::cout << std::endl << "a";
+            std::cout << std::endl << "a" << std::endl;
             switch (dirMove) {
 
-                case KEY_UP:
+                case DIR_UP:
                     targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
+                    std::cout << "step 01 : " << targetPos->lig << " " << targetPos->col;
                     targetPos->lig--;
                     break;
-                case KEY_DOWN:
+                case DIR_DOWN:
                     targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
+                    std::cout << "step 01 : " << targetPos->lig << " " << targetPos->col;
                     targetPos->lig++;
                     break;
-                case KEY_LEFT:
+                case DIR_LEFT:
                     targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
+                    std::cout << "step 01 : " << targetPos->lig << " " << targetPos->col;
                     targetPos->col--;
                     break;
-                case KEY_RIGHT:
+                case DIR_RIGHT:
                     targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
+                    std::cout << "step 01 : " << targetPos->lig << " " << targetPos->col;
                     targetPos->lig++;
                     break;
                 default:
+                    std::cerr << "001 - Invalid direction.";
                     break;
             }
-            std::cout << "a1";
+            std::cout << "step 1 : " << targetPos->lig << "," << targetPos->col << std::endl;
             //The case in front of the boat is free
-            if (m_grids[player][targetPos->lig][targetPos->lig]->isFree()) {
+            if (m_grids[player][targetPos->lig][targetPos->col]->isFree()) {
 
-                std::cout << "b";
+                std::cout << "step a1" << std::endl;
+                for (auto o : m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos()) {
+                    std::cout << "[" << o->lig << "," << o->col << "]" << std::endl;
+                }
                 Position* momentumPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeFrontPosition();
                 std::vector <Position*> newPosTab(m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos());
                 for (auto pos : newPosTab) {
@@ -196,12 +205,22 @@ void Game::eventManager(int player) {
                         pos->lig = targetPos->lig;
                     }
                 }
+                std::cout << "step a2" << std::endl;
+                for (auto o : m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos()) {
+                    std::cout << "[" << o->lig << "," << o->col << "]" << std::endl;
+                }
+                std::cout << "step a3" << std::endl;
+                Navire* boatTmp = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat();
+                m_grids[player][targetPos->lig][targetPos->lig]->setBoat(boatTmp);
+                //m_grids[player][momentumPos->lig][momentumPos->lig]->setFree();
                 m_state = STATE_DISPLAY;
+            } else {
+                std::cout << "step 2 : " << m_grids[player][targetPos->lig][targetPos->col]->getBoat()->getImg() << std::endl;
             }
         } else {
             //Movement in the opposite direction of the boat
             if (dirMove == m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeDir()) {
-                std::cout << "c";
+                std::cout << "c" << std::endl;
                 switch (dirMove) {
                     case KEY_UP:
                         targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
@@ -225,6 +244,7 @@ void Game::eventManager(int player) {
                 //The case in front of the back the boat is free
                 if (m_grids[player][targetPos->lig][targetPos->lig]->isFree()) {
                     std::cout << "d";
+                    //Modification of the vector of positions
                     Position* momentumPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeFrontPosition();
                     std::vector <Position*> newPosTab(m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos());
                     for (auto pos : newPosTab) {
@@ -233,6 +253,10 @@ void Game::eventManager(int player) {
                             pos->lig = targetPos->lig;
                         }
                     }
+                    //Modification in grid
+                    Navire* boatTmp = m_grids[player][momentumPos->lig][momentumPos->lig]->getBoat();
+                    m_grids[player][targetPos->lig][targetPos->lig]->setBoat(boatTmp);
+                    m_grids[player][momentumPos->lig][momentumPos->lig]->setFree();
                     m_state = STATE_DISPLAY;
                 }
             } else {
@@ -240,56 +264,34 @@ void Game::eventManager(int player) {
                 m_state = STATE_SELECTION;
             }
         }
+        std::cout << "step final" << std::endl;
+        system("pause");
 
     }
-    /*
-    if (m_state == STATE_SELECTED) {
-        do {
+    
+    if(m_state == STATE_ROTATION)
+    {
+         do {
             move = xplt_getch();
-
-
         } while (!checkKeys(move, STATE_SELECTED));
-        boolean uncorrectMove=true;
-        std::vector<Position*> pos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->generatePositionsTo(move);
         switch (move) {
-            case KEY_UP:
-            case KEY_DOWN:
-            case KEY_LEFT:
-            case KEY_RIGHT:
-                
-                for(int i=0;i<pos.size();i++)
-                {
-                    if (m_cursors[player]->lig > 0 && m_cursors[player]->lig < NB_LIG - 1 && m_cursors[player]->col > 0 && m_cursors[player]->col < NB_COL - 1)
-                    {
-                        if (!m_grids[player][pos.at(i)->lig][pos.at(i)->lig]->isFree())
-                        {
-                            uncorrectMove=false;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        uncorrectMove=false;
-                        break;
-                    }
-                }
-                if(uncorrectMove) std::cout << "Tu peux bouger ici";
-                else std::cout << "Non mon coco";
-                m_state=STATE_SELECTION;
-                break;
-            case KEY_SPACE:
-                //Rollback to state SELECTION
-                m_state = STATE_SELECTION;
-                m_case_selected.lig = 0;
-                m_case_selected.col = 0;
-
-
-                break;
-            default:
-                break;
-        }
+        case KEY_UP:
+            //rotation up
+            break;
+        case KEY_DOWN:
+            //rotation down
+            break;
+        case KEY_LEFT:
+            //rotation left
+            break;
+        case KEY_RIGHT:
+            //rotation right
+            break;
+        default:
+            return false;
     }
-     */
+        
+    }
 
 }
 

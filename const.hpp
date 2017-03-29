@@ -65,6 +65,6 @@
 #define STATE_DISPLAY 0
 #define STATE_SELECTION 1
 #define STATE_SELECTED 2
-
+#define STATE_ROTATION 3
 #endif /* CONST_HPP */
 

@@ -18,8 +18,9 @@
 
 int main(int argc, char** argv) {
     srand(time(NULL));
-    Menu menu;
-    menu.afficher_menu();
+    Game* game;
+    game = new Game();
+    game->loop();
     return 0;
 }
 
