@@ -60,10 +60,11 @@ void Game::loop() {
     //display2(PLAYER_ONE);
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
-        if (m_state == STATE_DISPLAY) display2(PLAYER_ONE);
-        resetCursor(PLAYER_ONE);
+        if (m_state == STATE_DISPLAY) display2(player);
+        resetCursor(player);
         /// select boat
         eventManager(player);
+        
         if (m_state == STATE_END_OF_ACTION) {
             switch (player) {
                 case PLAYER_ONE: player = PLAYER_TWO;
