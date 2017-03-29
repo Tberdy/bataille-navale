@@ -45,6 +45,9 @@ Game::Game() {
     m_cursors[PLAYER_ONE]->col = 7;
     m_cursors[PLAYER_TWO]->lig = 7;
     m_cursors[PLAYER_TWO]->col = 7;
+    
+    m_tabState.push_back(STATE_DISPLAY);
+    m_tabState.push_back(STATE_DISPLAY);
 
 }
 
@@ -57,10 +60,8 @@ void Game::loop() {
     //display2(PLAYER_ONE);
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
-        /// PLAYER 1
-
-        if (m_state == STATE_DISPLAY)display2(player);
-        resetCursor(player);
+        if (m_state == STATE_DISPLAY) display2(PLAYER_ONE);
+        resetCursor(PLAYER_ONE);
         /// select boat
         eventManager(player);
         if (m_state == STATE_END_OF_ACTION) {
@@ -109,6 +110,9 @@ bool Game::checkKeys(char move, int state) {
             break;
         case KEY_ESCAPE:
             if (state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            break;
+        case KEY_MOVE:
+            if (state == STATE_SELECTED) return true;
             break;
         case KEY_TURN:
             if (state == STATE_SELECTED) return true;
@@ -275,7 +279,7 @@ void Game::eventManager(int player) {
                 m_state = STATE_END_OF_ACTION;
                 m_messageBus.push_back("Deplacement effectue.");
             } else {
-                m_messageBus.push_back("La case est occupée. Veuillez réessayer une autre action.");
+                m_messageBus.push_back("La case est occupÃ©e. Veuillez rÃ©essayer une autre action.");
                 m_state = STATE_DISPLAY;
             }
         } else {
@@ -286,32 +290,12 @@ void Game::eventManager(int player) {
     }
     //Rotation
     if (m_state == STATE_ROTATION) {
-        do {
-            move = xplt_getch();
-        } while (!checkKeys(move, STATE_SELECTED));
-        switch (move) {
-            case KEY_UP:
-                //rotation up
-                //if(rotation made) m_stage=STATE_END_OF_ACTION;
-                break;
-            case KEY_DOWN:
-                //rotation down
-                break;
-            case KEY_LEFT:
-                //rotation left
-                break;
-            case KEY_RIGHT:
-                //rotation right
-                break;
-            case KEY_ESCAPE:
-                //go back to slection
-                m_state = STATE_SELECTION;
-                break;
-
-            default:
-                break;
+        if (turn(player, m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat())) {
+            m_state = STATE_END_OF_ACTION;
+        } else {
+            m_state = STATE_SELECTION;
         }
-
+        
     }
 
     //Fire
@@ -354,13 +338,17 @@ void Game::eventManager(int player) {
         for (int j = 0; j < NB_COL; j++) {
             if (!m_grids[player].at(i).at(j)->isFree()) {
                 //State of m_grids[player].at(i).at(j)->getBoat() and switch
-                //mouvement en 2 temps du cuirassé
-                //munition de fusée éclairante
+                //mouvement en 2 temps du cuirassÃ©
+                //munition de fusÃ©e Ã©clairante
             }
         }
     }
 
 
+}
+
+void Game::eventManager2(int player) {
+    
 }
 
 void Game::fire(int player, Navire* attaquant, Box* cible) {
@@ -378,6 +366,61 @@ void Game::fire(int player, Navire* attaquant, Box* cible) {
             cible->getBoat()->getPos()[i]->damage = true;
         }
     }
+}
+
+bool Game::checkTurn(int player, Navire* selected, const std::vector<Position*>& newPos) {
+    Position* middle = selected->getMiddle();
+    
+    for (int i = 0 ; i < selected->getSize() ; i++) {
+        if (newPos[i]->lig < 0 || newPos[i]->lig >= NB_LIG || newPos[i]->col < 0 || newPos[i]->col >= NB_COL) return false;
+        if (!m_grids[player][newPos[i]->lig][newPos[i]->col]->isFree() && newPos[i]->lig == middle->lig && newPos[i]->col == middle->col) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+void Game::genTurnPos(int player, Navire* selected, std::vector<Position*>& newPos) {
+    std::vector<Position*> copy = selected->getPos();
+
+    Position* middle = selected->getMiddle();
+    int diff = (selected->getSize() - 1) / 2;
+
+    switch (selected->getDir()) {
+        case DIR_DOWN:
+        case DIR_UP:
+            for (int i = 0; i < selected->getSize(); i++) {
+                newPos.push_back(new Position);
+                newPos[i]->damage = copy[i]->damage;
+                newPos[i]->lig = middle->lig;
+                newPos[i]->col = middle->col - diff + i;
+            }
+            break;
+        case DIR_LEFT:
+        case DIR_RIGHT:
+            for (int i = 0; i < selected->getSize(); i++) {
+                newPos.push_back(new Position);
+                newPos[i]->damage = copy[i]->damage;
+                newPos[i]->lig = middle->lig - diff + i;
+                newPos[i]->col = middle->col;
+            }
+            break;
+    }
+}
+
+bool Game::turn(int player, Navire* selected) {
+    std::vector<Position*> newPos;
+    genTurnPos(player, selected, newPos);
+    
+    if (!checkTurn(player, selected, newPos)) return false;
+    
+    for (int i = 0 ; i < selected->getSize() ; i++) {
+        m_grids[player][selected->getPos()[i]->lig][selected->getPos()[i]->col]->setBoat(nullptr);
+        m_grids[player][newPos[i]->lig][newPos[i]->col]->setBoat(selected);
+    }
+    
+    selected->changePos(newPos);
 }
 
 void Game::makeVisible(int player, Box* cible) {

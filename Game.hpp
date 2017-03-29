@@ -50,11 +50,20 @@ private:
     std::vector<std::string> m_messageBus;
     std::vector<Cursor*> m_cursors;
     int m_state;
+    std::vector<int> m_tabState;
     int m_memoryMove;
+    
     int other(int player);
     bool checkKeys(char move, int action);
     void eventManager(int player);
+    void eventManager2(int player);
+    
     void fire(int player, Navire* attaquant, Box* cible);
+    
+    bool checkTurn(int player, Navire* selected, const std::vector<Position*>& newPos);
+    void genTurnPos(int player, Navire* selected, std::vector<Position*>& newPos);
+    bool turn(int player, Navire* selected);
+    
     void makeVisible(int player, Box* cible);
     void display2(int player);
     
