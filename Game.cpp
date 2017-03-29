@@ -279,7 +279,7 @@ void Game::eventManager(int player) {
                 m_state = STATE_END_OF_ACTION;
                 m_messageBus.push_back("Deplacement effectue.");
             } else {
-                m_messageBus.push_back("La case est occupÃ©e. Veuillez rÃ©essayer une autre action.");
+                m_messageBus.push_back("La case est occupee. Veuillez rÃ©essayer une autre action.");
                 m_state = STATE_DISPLAY;
             }
         } else {
@@ -445,6 +445,7 @@ void Game::makeVisible(int player, Box* cible) {
 void Game::display2(int player) {
     xplt_clrscr();
     xplt_gotoligcol(0, 0);
+    m_messageBus.clear();
     switch (player) {
         case PLAYER_ONE: m_messageBus.push_back("**JOUEUR 1**");
             break;
