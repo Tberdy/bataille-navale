@@ -52,10 +52,10 @@ char Navire::getOppositeDir()
 {
     switch(m_dir)
     {
-        case KEY_UP: return KEY_DOWN;
-        case KEY_DOWN : return KEY_UP;
-        case KEY_LEFT : return KEY_RIGHT;
-        case KEY_RIGHT : return KEY_LEFT;
+        case DIR_UP: return DIR_DOWN;
+        case DIR_DOWN : return DIR_UP;
+        case DIR_LEFT : return DIR_RIGHT;
+        case DIR_RIGHT : return DIR_LEFT;
     }
 }
 void Navire::setPos(std::vector<Position*> pos) {
@@ -151,8 +151,8 @@ std::vector<Position*> Navire::generatePositionsTo(char dir) {
         Position* newPos = new Position();
         newPos->lig = pos->lig;
         newPos->col = pos->col;
-        if (dir == KEY_DOWN || dir == KEY_UP)newPos->lig = pos->lig + 2 * (dir % 2) - 1;
-        if (dir == KEY_LEFT || dir == KEY_RIGHT)newPos->col = pos->col + 2 * (dir % 2) - 1;
+        if (dir == DIR_DOWN || dir == DIR_UP)newPos->lig = pos->lig + 2 * (dir % 2) - 1;
+        if (dir == DIR_LEFT || dir == DIR_RIGHT)newPos->col = pos->col + 2 * (dir % 2) - 1;
         newPosTab.push_back(newPos);
     }
     std::cout << "New : \n";
