@@ -87,19 +87,19 @@ int Game::other(int player) {
 bool Game::checkKeys(char move, int state) {
     switch (move) {
         case KEY_UP:
-            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION || state == STATE_FIRE_SELECT) return true;
             break;
         case KEY_DOWN:
-            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION || state == STATE_FIRE_SELECT) return true;
             break;
         case KEY_LEFT:
-            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION || state == STATE_FIRE_SELECT) return true;
             break;
         case KEY_RIGHT:
-            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            if (state == STATE_SELECTION || state == STATE_SELECTED || state == STATE_ROTATION || state == STATE_FIRE_SELECT) return true;
             break;
         case KEY_SPACE:
-            if (state == STATE_SELECTION) return true;
+            if (state == STATE_SELECTION || state == STATE_FIRE_SELECT) return true;
             break;
         case KEY_ESCAPE:
             if (state == STATE_SELECTED || state == STATE_ROTATION) return true;
@@ -175,7 +175,7 @@ void Game::eventManager(int player) {
         switch (move) {
 
             case KEY_UP:
-                m_state = STATE_MOVE;
+                m_state = STATE_MOVE ;
                 m_memoryMove = keyToDir(move);
                 break;
             case KEY_DOWN:
@@ -293,14 +293,14 @@ void Game::eventManager(int player) {
         } else {
             m_state = STATE_SELECTION;
         }
-        
+        display2(player);
     }
 
     //Fire
     if (m_state == STATE_FIRE) {
         do {
             move = xplt_getch();
-        } while (!checkKeys(move, STATE_SELECTED));
+        } while (!checkKeys(move, STATE_FIRE_SELECT));
         switch (move) {
             case KEY_UP:
                 //selection up
@@ -369,8 +369,13 @@ bool Game::checkTurn(int player, Navire* selected, const std::vector<Position*>&
     
     for (int i = 0 ; i < selected->getSize() ; i++) {
         if (newPos[i]->lig < 0 || newPos[i]->lig >= NB_LIG || newPos[i]->col < 0 || newPos[i]->col >= NB_COL) return false;
-        if (!m_grids[player][newPos[i]->lig][newPos[i]->col]->isFree() && newPos[i]->lig == middle->lig && newPos[i]->col == middle->col) {
-            return false;
+        if (!m_grids[player][newPos[i]->lig][newPos[i]->col]->isFree()) {
+            if (newPos[i]->lig == middle->lig && newPos[i]->col == middle->col) {
+                
+            } else {
+                return false;
+            }
+            
         }
     }
     
@@ -408,15 +413,32 @@ void Game::genTurnPos(int player, Navire* selected, std::vector<Position*>& newP
 bool Game::turn(int player, Navire* selected) {
     std::vector<Position*> newPos;
     genTurnPos(player, selected, newPos);
+    for (auto elm : newPos) {
+        m_messageBus.push_back(std::to_string(elm->lig) + " " + std::to_string(elm->col));
+    }
     
     if (!checkTurn(player, selected, newPos)) return false;
     
+    m_messageBus[3] = "pas tourner";
     for (int i = 0 ; i < selected->getSize() ; i++) {
         m_grids[player][selected->getPos()[i]->lig][selected->getPos()[i]->col]->setBoat(nullptr);
         m_grids[player][newPos[i]->lig][newPos[i]->col]->setBoat(selected);
     }
     
     selected->changePos(newPos);
+    
+    switch (selected->getDir()) {
+        case DIR_DOWN:
+        case DIR_UP:
+            selected->setDir(DIR_LEFT);
+            break;
+        case DIR_LEFT:
+        case DIR_RIGHT:
+            selected->setDir(DIR_UP);
+            break;
+    }
+    
+    return true;
 }
 
 void Game::makeVisible(int player, Box* cible) {

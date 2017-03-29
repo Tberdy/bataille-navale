@@ -69,6 +69,7 @@
 #define STATE_ROTATION 3
 #define STATE_FIRE 4
 #define STATE_MOVE 5
+#define STATE_FIRE_SELECT 6
 #define STATE_END_OF_ACTION -1
 #endif /* CONST_HPP */
 
