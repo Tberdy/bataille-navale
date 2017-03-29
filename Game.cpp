@@ -56,16 +56,23 @@ Game::~Game() {
 
 void Game::loop() {
     int state = LOOP_IN_GAME;
-
+    int player = PLAYER_ONE;
     //display2(PLAYER_ONE);
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
-        /// PLAYER 1
-
         if (m_state == STATE_DISPLAY) display2(PLAYER_ONE);
         resetCursor(PLAYER_ONE);
         /// select boat
-        eventManager(PLAYER_ONE);
+        eventManager(player);
+        if (m_state == STATE_END_OF_ACTION) {
+            switch (player) {
+                case PLAYER_ONE: player = PLAYER_TWO;
+                    break;
+                case PLAYER_TWO: player = PLAYER_ONE;
+                    break;
+            }
+            m_state = STATE_DISPLAY;
+        }
     }
 
 }
@@ -131,6 +138,7 @@ void Game::eventManager(int player) {
     }
     //Cursor selection
     if (m_state == STATE_SELECTION) {
+        m_messageBus.clear();
         resetCursor(player);
         do {
             move = xplt_getch();
@@ -152,9 +160,13 @@ void Game::eventManager(int player) {
                 break;
             case KEY_SPACE:
                 xplt_gotoligcol(30, 0);
-                std::cout << "\"" << m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getImg() << "\"";
-                m_state = STATE_SELECTED;
-                resetCursor(player);
+                if (m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->isFree()) {
+                    m_messageBus.push_back("Le case selectionee est vide !");
+                } else {
+                    m_state = STATE_SELECTED;
+                    resetCursor(player);
+                }
+
                 break;
             case 'r':
                 m_state = STATE_DISPLAY;
@@ -208,83 +220,73 @@ void Game::eventManager(int player) {
     }
     //A boat will move
     if (m_state == STATE_MOVE) {
+        bool inverted = false;
         //The command is taken from the memory
         Position* targetPos = new Position;
 
         //Mapping between the mouvement selected and the direction of the boat 
-        std::cout << std::endl << "move : " << m_memoryMove << "dir: " << (int) m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir();
+
         if (m_memoryMove == m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getDir()) {
             targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
         } else {
             if (m_memoryMove == m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeDir()) {
+                inverted = true;
                 targetPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeFrontPosition();
             } else {
                 //Invalid direction
-                //m_messageBus += "\nLa direction choisie n'est pas correcte. Effectuez une rotation d'abord.";
+                m_messageBus.push_back("La direction choisie n'est pas correcte. Effectuez une rotation d'abord.");
                 m_state = STATE_DISPLAY;
                 return;
             }
         }
+
         switch (m_memoryMove) {
             case DIR_UP:
                 targetPos->lig--;
-                std::cout << "step 0 : " << targetPos->lig << " " << targetPos->col;
                 break;
             case DIR_DOWN:
                 targetPos->lig++;
-                std::cout << "step 0 : " << targetPos->lig << " " << targetPos->col;
                 break;
             case DIR_LEFT:
                 targetPos->col--;
-                std::cout << "step 0 : " << targetPos->lig << " " << targetPos->col;
                 break;
             case DIR_RIGHT:
-                targetPos->lig++;
-                std::cout << "step 0 : " << targetPos->lig << " " << targetPos->col;
+                targetPos->col++;
                 break;
             default:
                 std::cerr << "002 - Invalid direction.";
                 break;
         }
         //Verification that the case is still in the grid
-        if (targetPos->col > 0 && targetPos->col < NB_COL - 1 && targetPos->lig > 0 && targetPos->lig < NB_LIG) {
-            std::cout << "step 1 : " << targetPos->lig << "," << targetPos->col << std::endl;
-            //The case in front of the boat is free
+        if (targetPos->col > -1 && targetPos->col < NB_COL && targetPos->lig > -1 && targetPos->lig < NB_LIG) {
+            //The target case is free
             if (m_grids[player][targetPos->lig][targetPos->col]->isFree()) {
 
-                std::cout << "step a1" << std::endl;
-                for (auto o : m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos()) {
-                    std::cout << "[" << o->lig << "," << o->col << "]" << std::endl;
-                }
-                Position* momentumPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeFrontPosition();
+                Position* momentumPos;
+                if (!inverted) momentumPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getOppositeFrontPosition();
+                else momentumPos = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getFrontPosition();
                 std::vector <Position*> newPosTab(m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos());
                 for (auto pos : newPosTab) {
                     if (pos->col == momentumPos->col && pos->lig == momentumPos->lig) {
                         pos->col = targetPos->col;
                         pos->lig = targetPos->lig;
+                        pos->damage = targetPos->damage;
                     }
                 }
-                std::cout << "step a2" << std::endl;
-                for (auto o : m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat()->getPos()) {
-                    std::cout << "[" << o->lig << "," << o->col << "]" << std::endl;
-                }
-                std::cout << "step a3" << std::endl;
                 Navire* boatTmp = m_grids[player][m_cursors[player]->lig][m_cursors[player]->col]->getBoat();
                 m_grids[player][targetPos->lig][targetPos->col]->setBoat(boatTmp);
                 m_grids[player][momentumPos->lig][momentumPos->col]->setFree();
-                m_state = STATE_DISPLAY;
+                m_state = STATE_END_OF_ACTION;
+                m_messageBus.push_back("Deplacement effectue.");
             } else {
-                std::cout << "step 2 : " << m_grids[player][targetPos->lig][targetPos->col]->getBoat()->getImg() << std::endl;
+                m_messageBus.push_back("La case est occupee. Veuillez rÃ©essayer une autre action.");
+                m_state = STATE_DISPLAY;
             }
         } else {
             //Incorrect mouvement
+            m_messageBus.push_back("Mouvement en dehors de la grille.");
             m_state = STATE_DISPLAY;
         }
-
-
-        std::cout << "step final" << std::endl;
-        system("pause");
-        m_state = STATE_DISPLAY;
     }
     //Rotation
     if (m_state == STATE_ROTATION) {
@@ -336,11 +338,13 @@ void Game::eventManager(int player) {
         for (int j = 0; j < NB_COL; j++) {
             if (!m_grids[player].at(i).at(j)->isFree()) {
                 //State of m_grids[player].at(i).at(j)->getBoat() and switch
-                //mouvement en 2 temps du cuirassé
-                //munition de fusée éclairante
+                //mouvement en 2 temps du cuirassÃ©
+                //munition de fusÃ©e Ã©clairante
             }
         }
     }
+
+
 }
 
 void Game::eventManager2(int player) {
@@ -463,6 +467,13 @@ void Game::makeVisible(int player, Box* cible) {
 void Game::display2(int player) {
     xplt_clrscr();
     xplt_gotoligcol(0, 0);
+    m_messageBus.clear();
+    switch (player) {
+        case PLAYER_ONE: m_messageBus.push_back("**JOUEUR 1**");
+            break;
+        case PLAYER_TWO: m_messageBus. push_back("**JOUEUR 2**");
+            break;
+    }
     std::cout << " ";
     for (int i = 0; i < NB_COL; i++) {
         if (i < 10) std::cout << "| " << i;
