@@ -97,12 +97,18 @@ bool Game::checkKeys(char move, int state) {
         case KEY_SPACE:
             if (state == STATE_SELECTION) return true;
             break;
+        case KEY_ESCAPE:
+            if (state == STATE_SELECTED || state == STATE_ROTATION) return true;
+            break;
+        case KEY_TURN:
+            if (state == STATE_SELECTED) return true;
+            break;
+        case KEY_FIRE:
+            if(state==STATE_SELECTED) return true;
+            break;
         case 'r':
             if (state == STATE_SELECTION)return true;
             break;
-        case KEY_ESCAPE:
-        case KEY_FIRE:
-        case KEY_TURN:
         default:
             return false;
     }
@@ -185,6 +191,14 @@ void Game::eventManager(int player) {
                     std::cout << "step 01 : " << targetPos->lig << " " << targetPos->col;
                     targetPos->lig++;
                     break;
+                case KEY_TURN:
+                    m_state = STATE_ROTATION;
+                    break;
+                case KEY_ESCAPE:
+                    //go back to slection
+                    m_state = STATE_SELECTION;
+                    break;
+
                 default:
                     std::cerr << "001 - Invalid direction.";
                     break;
@@ -268,31 +282,81 @@ void Game::eventManager(int player) {
         system("pause");
 
     }
-    
-    if(m_state == STATE_ROTATION)
-    {
-         do {
+
+    //Rotation
+    if (m_state == STATE_ROTATION) {
+        do {
             move = xplt_getch();
         } while (!checkKeys(move, STATE_SELECTED));
         switch (move) {
-        case KEY_UP:
-            //rotation up
-            break;
-        case KEY_DOWN:
-            //rotation down
-            break;
-        case KEY_LEFT:
-            //rotation left
-            break;
-        case KEY_RIGHT:
-            //rotation right
-            break;
-        default:
-            return false;
-    }
-        
-    }
+            case KEY_UP:
+                //rotation up
+                //if(rotation made) m_stage=STATE_END_OF_ACTION;
+                break;
+            case KEY_DOWN:
+                //rotation down
+                break;
+            case KEY_LEFT:
+                //rotation left
+                break;
+            case KEY_RIGHT:
+                //rotation right
+                break;
+            case KEY_ESCAPE:
+                //go back to slection
+                m_state = STATE_SELECTION;
+                break;
 
+            default:
+                return false;
+        }
+
+    }
+    
+    //Fire
+    if (m_state == STATE_FIRE) {
+        do {
+            move = xplt_getch();
+        } while (!checkKeys(move, STATE_SELECTED));
+        switch (move) {
+            case KEY_UP:
+                //selection up
+                break;
+            case KEY_DOWN:
+                //selection down
+                break;
+            case KEY_LEFT:
+                //slection left
+                break;
+            case KEY_RIGHT:
+                //selection right
+                break;
+            case KEY_SPACE:
+                //fire !
+                //if fire done : m_state=STATE_END_OF_ACTION;
+                break;
+            case KEY_ESCAPE:
+                //go back to slection
+                m_state = STATE_SELECTION;
+                break;
+
+            default:
+                return false;
+        }
+
+    }
+    
+    //States of boat
+    for (int i = 0; i < NB_LIG; i++) {
+        
+
+        for (int j = 0; j < NB_COL; j++) {
+            if(!m_grids[player].at(i).at(j)->isFree())
+            {
+                //State of m_grids[player].at(i).at(j)->getBoat() and switch
+            }
+        }
+    }
 }
 
 void Game::fire(int player, Navire* attaquant, Box* cible) {
