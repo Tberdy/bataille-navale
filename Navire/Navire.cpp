@@ -44,6 +44,11 @@ void Navire::setDir(char dir)
 {
     m_dir=dir;
 }
+
+Position* Navire::getMiddle() {
+    return m_tabPos[(m_tabPos.size() - 1) / 2];
+}
+
 char Navire::getOppositeDir()
 {
     switch(m_dir)
@@ -59,6 +64,15 @@ void Navire::setPos(std::vector<Position*> pos) {
         m_tabPos.push_back(pos[i]);
     }
 }
+
+void Navire::changePos(std::vector<Position*> pos) {
+    for (int i = 0 ; i < pos.size() ; i++) {
+        delete m_tabPos[i];
+        m_tabPos[i] = pos[i];
+    }
+}
+
+
 std::vector<Position*> Navire::getPos()
 {
     return m_tabPos;

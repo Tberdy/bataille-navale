@@ -35,9 +35,11 @@ public:
     int getPuissance();
     char getDir();
     void setDir(char dir);
+    Position* getMiddle();
     char getOppositeDir();
     std::string getImg(); 
     void setPos(std::vector<Position*> pos);
+    void changePos(std::vector<Position*> pos);
 
     std::vector<Position*> getPos();
     Position* getFrontPosition();

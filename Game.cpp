@@ -58,7 +58,7 @@ void Game::loop() {
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         /// PLAYER 1
 
-        if (m_state == STATE_DISPLAY)display2(PLAYER_ONE);
+        if (m_state == STATE_DISPLAY) display2(PLAYER_ONE);
         resetCursor(PLAYER_ONE);
         /// select boat
         eventManager(PLAYER_ONE);
@@ -293,6 +293,10 @@ void Game::eventManager(int player) {
 
 }
 
+void Game::eventManager2(int player) {
+    
+}
+
 void Game::fire(int player, Navire* attaquant, Box* cible) {
     if (attaquant->hasRocket()) {
         makeVisible(player, cible);
@@ -308,6 +312,61 @@ void Game::fire(int player, Navire* attaquant, Box* cible) {
             cible->getBoat()->getPos()[i]->damage = true;
         }
     }
+}
+
+bool Game::checkTurn(int player, Navire* selected, const std::vector<Position*>& newPos) {
+    Position* middle = selected->getMiddle();
+    
+    for (int i = 0 ; i < selected->getSize() ; i++) {
+        if (newPos[i]->lig < 0 || newPos[i]->lig >= NB_LIG || newPos[i]->col < 0 || newPos[i]->col >= NB_COL) return false;
+        if (!m_grids[player][newPos[i]->lig][newPos[i]->col]->isFree() && newPos[i]->lig == middle->lig && newPos[i]->col == middle->col) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+void Game::genTurnPos(int player, Navire* selected, std::vector<Position*>& newPos) {
+    std::vector<Position*> copy = selected->getPos();
+
+    Position* middle = selected->getMiddle();
+    int diff = (selected->getSize() - 1) / 2;
+
+    switch (selected->getDir()) {
+        case DIR_DOWN:
+        case DIR_UP:
+            for (int i = 0; i < selected->getSize(); i++) {
+                newPos.push_back(new Position);
+                newPos[i]->damage = copy[i]->damage;
+                newPos[i]->lig = middle->lig;
+                newPos[i]->col = middle->col - diff + i;
+            }
+            break;
+        case DIR_LEFT:
+        case DIR_RIGHT:
+            for (int i = 0; i < selected->getSize(); i++) {
+                newPos.push_back(new Position);
+                newPos[i]->damage = copy[i]->damage;
+                newPos[i]->lig = middle->lig - diff + i;
+                newPos[i]->col = middle->col;
+            }
+            break;
+    }
+}
+
+bool Game::turn(int player, Navire* selected) {
+    std::vector<Position*> newPos;
+    genTurnPos(player, selected, newPos);
+    
+    if (!checkTurn(player, selected, newPos)) return false;
+    
+    for (int i = 0 ; i < selected->getSize() ; i++) {
+        m_grids[player][selected->getPos()[i]->lig][selected->getPos()[i]->col]->setBoat(nullptr);
+        m_grids[player][newPos[i]->lig][newPos[i]->col]->setBoat(selected);
+    }
+    
+    selected->changePos(newPos);
 }
 
 void Game::makeVisible(int player, Box* cible) {
