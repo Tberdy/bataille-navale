@@ -57,7 +57,6 @@ Game::~Game() {
 void Game::loop() {
     int state = LOOP_IN_GAME;
     int player = PLAYER_ONE;
-    //display2(PLAYER_ONE);
 
     while (state != LOOP_END_OF_GAME && state != LOOP_GAME_OVER) {
         if (m_state == STATE_DISPLAY) display2(player);
