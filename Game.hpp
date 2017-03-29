@@ -50,7 +50,7 @@ private:
     std::vector<std::string> m_messageBus;
     std::vector<Cursor*> m_cursors;
     int m_state;
-    
+    int m_memoryMove;
     int other(int player);
     bool checkKeys(char move, int action);
     void eventManager(int player);
